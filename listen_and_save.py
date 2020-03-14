@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 import sqlite3
 
 from serial import Serial
@@ -8,11 +9,14 @@ from serial_to_sqlite.database import SoilHumidityTable, BatteryStateTable
 from serial_to_sqlite.decode_message import decode_message
 os.getcwd()
 
-port = "/dev/ttyACM0"
+port = '/dev/ttyACM0'
 baud_rate = 9600
 
+sqlite_db_path = Path('/usr/local/sqlite')
+sqlite_db_path.mkdir(parents=True, exist_ok=True)
+
 # Create database and tables if needed
-connection = sqlite3.connect('sensors_data.db')
+connection = sqlite3.connect(sqlite_db_path / 'sensors_data.db')
 
 soil_humidity_table = SoilHumidityTable(connection)
 if not soil_humidity_table.exists():

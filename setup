@@ -1,7 +1,11 @@
 #!/bin/bash
-app_name="serial_to_db" # Maybe should be store_sensors_data
+app_name="serial_to_sqlite" # Maybe should be store_sensors_data
 sudo apt update
 sudo apt-get install sqlite3 libsqlite3-dev
+
+sqlite_db_path = "/usr/local/sqlite/"
+sudo mkdir $sqlite_db_path
+sudo chown -R $USER:$USER $sqlite_db_path
 
 curl https://pyenv.run | bash
 pyenv install 3.7.6
