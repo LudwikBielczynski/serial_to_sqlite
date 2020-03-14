@@ -1,0 +1,11 @@
+#!/bin/bash
+app_name="serial_to_db" # Maybe should be store_sensors_data
+sudo apt update
+sudo apt-get install sqlite3 libsqlite3-dev
+
+curl https://pyenv.run | bash
+pyenv install 3.7.6
+
+pyenv virtualenv 3.7.6 $app_name
+pyenv activate $app_name
+pip install -f requirements.txt

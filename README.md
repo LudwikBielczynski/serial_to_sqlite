@@ -1,0 +1,1 @@
+This application listens to the selected serial port and stores sensors data in an sqlite database.
