@@ -10,7 +10,7 @@
 #define CE_PIN 8
 #define CSN_PIN 9
 
-const byte thisSlaveAddress[5] = {'R','x','A','A','A'};
+const byte SLAVE_ADDRESS[5] = {'R','x','0','0','1'};
 
 RF24 radio(CE_PIN, CSN_PIN);
 
@@ -29,7 +29,7 @@ void setup() {
 
   if (isSetupSuccess) {
     // Set the pipe on the selected address address
-    radio.openReadingPipe(1, thisSlaveAddress);
+    radio.openReadingPipe(1, SLAVE_ADDRESS);
     radio.setDataRate(RF24_250KBPS);
     radio.setPALevel(RF24_PA_MIN);
     // radio.printDetails();
