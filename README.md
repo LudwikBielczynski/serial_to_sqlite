@@ -1,1 +1,4 @@
-This application listens to the selected serial port and stores sensors data in an sqlite database.
+General scheme of the watering control system is shown below:
+![alt text](https://github.com/LudwikBielczynski/watering_control_system/blob/master/scheme.svg)
+
+Code to program transmitter and receiver arduino microcontrollers are available in sensors directory.

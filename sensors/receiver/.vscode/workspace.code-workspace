@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "/home/ludwik/workspace/watering_control_system/sensors/receiver"
+		},
+		{
+			"name": "transmitter",
+			"path": "/home/ludwik/workspace/watering_control_system/sensors/transmitter"
+		}
+	],
+	"settings": {}
+}
