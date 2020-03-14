@@ -22,7 +22,6 @@ battery_state_table = BatteryStateTable(connection)
 if not battery_state_table.exists():
     battery_state_table.create()
 
-
 # Read from serial port constantly
 with Serial(port, baud_rate) as serial:
     while True:
@@ -34,5 +33,5 @@ with Serial(port, baud_rate) as serial:
             transmitter_name, soil_humidity_value, battery_state = decode_message(message)
             soil_humidity_table.insert(transmitter_name, soil_humidity_value)
             battery_state_table.insert(transmitter_name, battery_state)
-
-connection.close()
+            # print(message)
+# connection.close()
