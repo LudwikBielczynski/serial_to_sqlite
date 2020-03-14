@@ -90,10 +90,14 @@ void loop() {
   currentTimeMs = millis();
   isLargerThanInterval = currentTimeMs - previousTimeMs >= TRANSMITTER_SEND_INTERVAL_MS;
   if (isLargerThanInterval | shouldStartWithMeasurement) {
+    // To decrease power consuption the radio is powered down
+    radio.powerUp();
+    delay(10);
 
     // Repeat few times the measurement to get the precision and sleep afterwards
     for (size_t i = 0; i < 4; i++)
     {
+
       char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
       // Read values from the humidity sensor
@@ -104,6 +108,9 @@ void loop() {
       send(dataToSend, dataToSendSize);
       delay(1000);
     }
+
+    radio.powerDown();
+
     shouldStartWithMeasurement = false;
     previousTimeMs = millis();
   }
