@@ -63,7 +63,7 @@ void showData(bool hasNewData, char * dataReceived) {
 
 
 void loop() {
-  unsigned short dataReceivedSize = 8;
+  unsigned short dataReceivedSize = 12;
   char dataReceived[dataReceivedSize];
   bool hasNewData = false;
 
