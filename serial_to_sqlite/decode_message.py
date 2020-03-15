@@ -11,7 +11,7 @@ def decode_message(message: str) -> Tuple[str, Optional[int], Optional[float]]:
 
         transmitter_name = tx_message.split(';')[0]
         soil_humidity_value = int(tx_message.split(';')[1])
-        battery_state = 1.
+        battery_state = float(tx_message.split(';')[2])
 
     except IndexError:
         print(f'Wrong message format: {message}')
