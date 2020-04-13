@@ -13,6 +13,7 @@
 
 #define SENSOR_PIN A0
 #define VOLTAGE_SPLITTER_PIN A2
+#define SOIL_HUMIDITY_POWER_PIN 5
 #define CE_PIN 8
 #define CSN_PIN 9
 
@@ -120,7 +121,10 @@ void loop() {
   if (isLargerThanInterval | shouldStartWithMeasurement) {
     // To decrease power consuption the radio is powered down
     radio.powerUp();
-    delay(10);
+
+    // Turn on soil humidity sensor only when measuring to decrease sensor degradation
+    digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
+    delay(500);
 
     // Repeat few times the measurement to get the precision and sleep afterwards
     for (size_t i = 0; i < 4; i++)
@@ -132,6 +136,7 @@ void loop() {
       Serial.println(voltage);
 
       // Read values from the humidity sensor
+
       soilHumiditySensorValue = analogRead(SENSOR_PIN);
       prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
 
@@ -140,7 +145,10 @@ void loop() {
       delay(1000);
     }
 
+    // Power radio/sensor down
     radio.powerDown();
+    digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW);
+    delay(500);
 
     shouldStartWithMeasurement = false;
     previousTimeMs = millis();
