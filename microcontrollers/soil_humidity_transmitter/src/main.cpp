@@ -8,14 +8,14 @@
 #include <RF24.h>
 
 #include <printf.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define SENSOR_PIN A0
-#define VOLTAGE_SPLITTER_PIN A2
-#define SOIL_HUMIDITY_POWER_PIN 5
-#define CE_PIN 8
-#define CSN_PIN 9
+
+// Pin layout
+const uint8_t SOIL_HUMIDITY_POWER_PIN = 5;
+const uint8_t CE_PIN = 8;
+const uint8_t CSN_PIN = 9;
+const uint8_t SENSOR_PIN = 14; // A0
+const uint8_t VOLTAGE_SPLITTER_PIN = 16; // A2
 
 // Transmitter settings
 RF24 radio(CE_PIN, CSN_PIN);
@@ -133,7 +133,7 @@ void loop() {
 
       // Read battery voltage
       voltage = measureVoltage();
-      Serial.println(voltage);
+      // Serial.println(voltage);
 
       // Read values from the humidity sensor
 
