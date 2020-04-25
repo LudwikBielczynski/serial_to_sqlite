@@ -124,7 +124,7 @@ void loop() {
 
     // Turn on soil humidity sensor only when measuring to decrease sensor degradation
     digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
-    delay(500);
+    delay(5000);
 
     // Repeat few times the measurement to get the precision and sleep afterwards
     for (size_t i = 0; i < 4; i++)
@@ -142,7 +142,7 @@ void loop() {
 
       // Send to the receiver
       send(dataToSend, dataToSendSize);
-      delay(1000);
+      delay(3000);
     }
 
     // Power radio/sensor down

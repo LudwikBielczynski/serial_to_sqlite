@@ -12,3 +12,7 @@ The wiring scheme for the receiver module is as follows:
 ## Soil humidity module
 When compared with the receiver module, the wiring scheme of the soil humidity module has additionally (i) an external power supply, (ii) a voltage divider plugged to the analog pin (to measure the voltage of the battery), and (iii) the soil humidity sensor.
 ![alt text](https://github.com/LudwikBielczynski/watering_control_system/blob/master/schemes/soil_humidity_module_scheme.svg)
+
+# Receiver module
+## Install as a service
+The sensor_listener.service script should be placed in the /etc/systemd/system folder.
