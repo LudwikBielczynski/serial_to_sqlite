@@ -115,6 +115,7 @@ void prepareDataToSend(char * dataToSend, unsigned short soilHumiditySensorValue
 
 
 bool send(char * dataToSend, unsigned short dataToSendSize) {
+  Serial.println("Trying to send data");
   bool isWriteSuccess = radio.write(dataToSend, dataToSendSize);
 
   Serial.print("Message to send: ");
@@ -139,11 +140,12 @@ void loop() {
     {
       // Read battery voltage before other components are powered up
       voltage = measureVoltage();
-      // Serial.println(voltage);
+      Serial.println(voltage);
 
       char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
       // Measure soil moisture
+      Serial.println("Measure soil humidity");
       digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
       delay(1000);
 
@@ -153,12 +155,15 @@ void loop() {
       digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW); // Power sensor down
 
       // Send data to the receiver
+      Serial.println("Activate radio");
       digitalWrite(RADIO_POWER_PIN, HIGH);
       delay(1000);
 
+      setUpTransmitter();
       send(dataToSend, dataToSendSize);
 
       digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
+      Serial.println("Data sent");
       delay(10000);
     }
 
