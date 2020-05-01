@@ -11,6 +11,7 @@
 
 
 // Pin layout
+const uint8_t RADIO_POWER_PIN = 4;
 const uint8_t SOIL_HUMIDITY_POWER_PIN = 5;
 const uint8_t CE_PIN = 8;
 const uint8_t CSN_PIN = 9;
@@ -30,6 +31,7 @@ unsigned long long currentTimeMs;
 bool isLargerThanInterval = false;
 
 // Soil humidity settings
+const unsigned short int SOIL_MOISTURE_MEASUREMENTS_NR = 4;
 const unsigned short dataToSendSize = 12;
 int soilHumiditySensorValue;
 
@@ -42,10 +44,12 @@ int voltagesSum = 0;
 float voltage;
 
 void setup() {
-  bool isSetupSuccess = false;
-
   Serial.begin(9600);
   printf_begin();
+}
+
+void setUpTransmitter() {
+  bool isSetupSuccess = false;
 
   Serial.println("Starting the transmitter...");
   isSetupSuccess = radio.begin();
@@ -76,10 +80,21 @@ float measureVoltage() {
     voltagesSum += analogRead(VOLTAGE_SPLITTER_PIN);
     delay(10);
   }
+  // Serial.println(voltagesSum / VOLTAGE_MEASUREMENTS_NR);
   float voltage = VOLTAGE_SPLIT_FACTOR * REFERENCE_VOLTAGE * voltagesSum / (1024.0 * VOLTAGE_MEASUREMENTS_NR);
   return voltage;
 }
 
+long readVoltageFromInternalRef() {
+  long result; // Read 1.1V reference against AVcc
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Convert
+  while (bit_is_set(ADCSRA, ADSC));
+  result = ADCL; result |= ADCH<<8;
+  result = 1126400L / result; // Back-calculate AVcc in mV
+  return result;
+}
 
 void prepareDataToSend(char * dataToSend, unsigned short soilHumiditySensorValue, float voltage){
   strcat(dataToSend, TRANSMITTER_NAME);
@@ -119,36 +134,33 @@ void loop() {
   currentTimeMs = millis();
   isLargerThanInterval = currentTimeMs - previousTimeMs >= TRANSMITTER_SEND_INTERVAL_MS;
   if (isLargerThanInterval | shouldStartWithMeasurement) {
-    // To decrease power consuption the radio is powered down
-    radio.powerUp();
-
-    // Turn on soil humidity sensor only when measuring to decrease sensor degradation
-    digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
-    delay(5000);
-
     // Repeat few times the measurement to get the precision and sleep afterwards
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < SOIL_MOISTURE_MEASUREMENTS_NR; i++)
     {
-      char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
-
-      // Read battery voltage
+      // Read battery voltage before other components are powered up
       voltage = measureVoltage();
       // Serial.println(voltage);
 
-      // Read values from the humidity sensor
+      char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
+
+      // Measure soil moisture
+      digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
+      delay(1000);
 
       soilHumiditySensorValue = analogRead(SENSOR_PIN);
       prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
 
-      // Send to the receiver
-      send(dataToSend, dataToSendSize);
-      delay(3000);
-    }
+      digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW); // Power sensor down
 
-    // Power radio/sensor down
-    radio.powerDown();
-    digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW);
-    delay(500);
+      // Send data to the receiver
+      digitalWrite(RADIO_POWER_PIN, HIGH);
+      delay(1000);
+
+      send(dataToSend, dataToSendSize);
+
+      digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
+      delay(10000);
+    }
 
     shouldStartWithMeasurement = false;
     previousTimeMs = millis();
