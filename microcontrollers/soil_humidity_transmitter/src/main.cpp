@@ -43,21 +43,17 @@ const float VOLTAGE_SPLIT_FACTOR = 11.0; // based on (R1 + R2)/R2 where R1=1MOhm
 int voltagesSum = 0;
 float voltage;
 
-void setup() {
-  Serial.begin(9600);
-  printf_begin();
-}
 
 void setUpTransmitter() {
-  bool isSetupSuccess = false;
-
   Serial.println("Starting the transmitter...");
-  isSetupSuccess = radio.begin();
-  // Serial.print("radio.begin() success: ");
-  // Serial.println(isSetupSuccess);
-  // radio.printDetails();
+
+  bool isSetupSuccess = radio.begin();
+  Serial.print("radio.begin() success: ");
+  Serial.println(isSetupSuccess);
 
   if (isSetupSuccess) {
+    // radio.setAutoAck(false);
+
     // Set the pipe on the selected address address
     radio.openWritingPipe(SLAVE_ADDRESS);
     Serial.println("Pipe open");
@@ -66,12 +62,21 @@ void setUpTransmitter() {
     radio.setDataRate(RF24_250KBPS);
     radio.setPALevel(RF24_PA_MIN);
 
-    // radio.printDetails();
+    radio.printDetails();
     Serial.println("Ready to transmit...");
   }
   else
     Serial.println("There were issues during initial setup and the transmitter is not ready");
 }
+
+
+void setup() {
+  Serial.begin(9600);
+  printf_begin();
+  pinMode(RADIO_POWER_PIN, OUTPUT);
+  pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
+}
+
 
 float measureVoltage() {
   voltagesSum = 0;
@@ -85,6 +90,7 @@ float measureVoltage() {
   return voltage;
 }
 
+
 long readVoltageFromInternalRef() {
   long result; // Read 1.1V reference against AVcc
   ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
@@ -95,6 +101,7 @@ long readVoltageFromInternalRef() {
   result = 1126400L / result; // Back-calculate AVcc in mV
   return result;
 }
+
 
 void prepareDataToSend(char * dataToSend, unsigned short soilHumiditySensorValue, float voltage){
   strcat(dataToSend, TRANSMITTER_NAME);
@@ -110,7 +117,6 @@ void prepareDataToSend(char * dataToSend, unsigned short soilHumiditySensorValue
   char voltageStr[4] = "";
   dtostrf(voltage, 3, 2, voltageStr);
   strcat(dataToSend, voltageStr);
-
 }
 
 
@@ -127,6 +133,13 @@ bool send(char * dataToSend, unsigned short dataToSendSize) {
   else {
     Serial.println(" | Transmission failed");
   }
+
+  if (radio.failureDetected) {
+    Serial.println("A failure was detected. Trying to Reset configuration");
+    radio.failureDetected = 0; // Reset the detection value
+    setUpTransmitter();
+  }
+
   return isWriteSuccess;
 }
 
@@ -140,7 +153,7 @@ void loop() {
     {
       // Read battery voltage before other components are powered up
       voltage = measureVoltage();
-      Serial.println(voltage);
+      // Serial.println(voltage);
 
       char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
@@ -157,14 +170,17 @@ void loop() {
       // Send data to the receiver
       Serial.println("Activate radio");
       digitalWrite(RADIO_POWER_PIN, HIGH);
-      delay(1000);
+      delay(200);
 
       setUpTransmitter();
+      radio.powerUp();
       send(dataToSend, dataToSendSize);
-
-      digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
       Serial.println("Data sent");
-      delay(10000);
+
+      radio.powerDown();
+      digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
+      Serial.println("Deactivated radio");
+      delay(5000);
     }
 
     shouldStartWithMeasurement = false;
