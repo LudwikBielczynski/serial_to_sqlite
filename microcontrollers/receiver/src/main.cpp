@@ -19,8 +19,8 @@ void setup() {
 
   Serial.begin(9600);
   printf_begin();
+  Serial.println("Powered up the microprocessor...");
 
-  Serial.println("Starting the receiver.");
   isSetupSuccess = radio.begin();
   // Serial.print("Receiver initialization status: ");
   // Serial.println(isSetupSuccess);

@@ -72,9 +72,12 @@ void setUpTransmitter() {
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("Powered up the microprocessor...");
+
   printf_begin();
   pinMode(RADIO_POWER_PIN, OUTPUT);
   pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
+
 }
 
 
@@ -153,32 +156,33 @@ void loop() {
     {
       // Read battery voltage before other components are powered up
       voltage = measureVoltage();
-      // Serial.println(voltage);
+      Serial.println(voltage);
 
-      char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
+      // char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
-      // Measure soil moisture
+      // // Measure soil moisture
       Serial.println("Measure soil humidity");
-      digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
-      delay(1000);
+      // digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
+      delay(5000);
 
       soilHumiditySensorValue = analogRead(SENSOR_PIN);
-      prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
+      Serial.println(soilHumiditySensorValue);
+      // prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
 
-      digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW); // Power sensor down
+      // digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW); // Power sensor down
 
       // Send data to the receiver
       Serial.println("Activate radio");
-      digitalWrite(RADIO_POWER_PIN, HIGH);
+      // digitalWrite(RADIO_POWER_PIN, HIGH);
       delay(200);
 
-      setUpTransmitter();
-      radio.powerUp();
-      send(dataToSend, dataToSendSize);
-      Serial.println("Data sent");
+      // setUpTransmitter();
+      // radio.powerUp();
+      // send(dataToSend, dataToSendSize);
+      // Serial.println("Data sent");
 
-      radio.powerDown();
-      digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
+      /// radio.powerDown();
+      // digitalWrite(RADIO_POWER_PIN, LOW); // Power radio down
       Serial.println("Deactivated radio");
       delay(5000);
     }
