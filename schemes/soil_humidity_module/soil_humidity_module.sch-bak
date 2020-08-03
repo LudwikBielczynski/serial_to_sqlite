@@ -1,0 +1,226 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:Battery BT1
+U 1 1 5F267CFE
+P 2250 3050
+F 0 "BT1" H 2358 3096 50  0000 L CNN
+F 1 "Battery" H 2358 3005 50  0000 L CNN
+F 2 "" V 2250 3110 50  0001 C CNN
+F 3 "~" V 2250 3110 50  0001 C CNN
+	1    2250 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L MCU_Module:Arduino_Nano_v3.x A1
+U 1 1 5F2667E0
+P 5600 3000
+F 0 "A1" V 5650 2950 50  0000 R CNN
+F 1 "Arduino_Nano_v3.x" V 5550 3250 50  0000 R CNN
+F 2 "Module:Arduino_Nano" H 5600 3000 50  0001 C CIN
+F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 5600 3000 50  0001 C CNN
+	1    5600 3000
+	1    0    0    -1  
+$EndComp
+Text GLabel 5100 3600 0    50   Input ~ 0
+U1_MISO
+Text GLabel 3050 2900 0    50   Output ~ 0
+A1_D12
+Text GLabel 3050 3000 0    50   Output ~ 0
+A1_D13
+Text GLabel 5100 3700 0    50   Input ~ 0
+U1_SCK
+Text GLabel 5100 3500 0    50   Input ~ 0
+U1_MOSI
+Text GLabel 3050 2800 0    50   Output ~ 0
+A1_D11
+Text GLabel 3050 3100 0    50   Output ~ 0
+A1_D9
+Text GLabel 5100 3300 0    50   Output ~ 0
+U1_CSN
+Text GLabel 3050 3300 0    50   Input ~ 0
+A1_D8
+Text GLabel 5100 3200 0    50   Input ~ 0
+U1_CE
+Wire Wire Line
+	2250 1650 2250 2850
+Wire Wire Line
+	2250 4200 3550 4200
+Wire Wire Line
+	2250 3250 2250 4200
+Wire Wire Line
+	3550 4100 3550 4200
+Wire Wire Line
+	5600 4200 5600 4000
+Connection ~ 3550 4200
+Wire Wire Line
+	5500 1650 5500 2000
+$Comp
+L Device:R R3
+U 1 1 5F2DE1F5
+P 6500 2950
+F 0 "R3" H 6570 2996 50  0000 L CNN
+F 1 "10k" H 6570 2905 50  0000 L CNN
+F 2 "" V 6430 2950 50  0001 C CNN
+F 3 "~" H 6500 2950 50  0001 C CNN
+	1    6500 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 5F2E0DD1
+P 6500 3450
+F 0 "R4" H 6570 3496 50  0000 L CNN
+F 1 "1k" H 6570 3405 50  0000 L CNN
+F 2 "" V 6430 3450 50  0001 C CNN
+F 3 "~" H 6500 3450 50  0001 C CNN
+	1    6500 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6500 4200 6500 3600
+Connection ~ 5600 4200
+Connection ~ 5500 1650
+Wire Wire Line
+	6500 1650 6500 2800
+Wire Wire Line
+	6500 3100 6500 3200
+Connection ~ 6500 3200
+Wire Wire Line
+	6500 3200 6500 3300
+Wire Wire Line
+	4750 2800 5100 2800
+Wire Wire Line
+	2250 1650 3550 1650
+Connection ~ 3550 1650
+Wire Wire Line
+	3550 1650 4100 1650
+$Comp
+L Device:R R1
+U 1 1 5F31B617
+P 4100 1800
+F 0 "R1" H 4170 1846 50  0000 L CNN
+F 1 "10k" H 4170 1755 50  0000 L CNN
+F 2 "" V 4030 1800 50  0001 C CNN
+F 3 "~" H 4100 1800 50  0001 C CNN
+	1    4100 1800
+	1    0    0    -1  
+$EndComp
+Connection ~ 4100 1650
+Wire Wire Line
+	3550 1750 3550 1650
+Wire Wire Line
+	3550 2150 3550 2500
+$Comp
+L trial:IRL540N Q1
+U 1 1 5F29F1A2
+P 3650 1950
+F 0 "Q1" H 3855 1904 50  0000 L CNN
+F 1 "IRL540N" H 3855 1995 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 3900 1875 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/irl540npbf.pdf?fileId=5546d462533600a40153565fc2a62567" H 3650 1950 50  0001 L CNN
+	1    3650 1950
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3850 1950 4100 1950
+Wire Wire Line
+	4750 1950 4750 2150
+Connection ~ 4100 1950
+Wire Wire Line
+	4100 1950 4750 1950
+$Comp
+L Device:R R2
+U 1 1 5F322358
+P 4750 2300
+F 0 "R2" H 4820 2346 50  0000 L CNN
+F 1 "R" H 4820 2255 50  0000 L CNN
+F 2 "" V 4680 2300 50  0001 C CNN
+F 3 "~" H 4750 2300 50  0001 C CNN
+	1    4750 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4750 2450 4750 2800
+Wire Wire Line
+	6100 3200 6500 3200
+Wire Wire Line
+	3550 4200 5600 4200
+Wire Wire Line
+	4100 1650 5500 1650
+$Comp
+L trial:SEN0193 U2
+U 1 1 5F33FAC0
+P 7550 2900
+F 0 "U2" V 7596 2570 50  0000 R CNN
+F 1 "SEN0193" V 7505 2570 50  0000 R CNN
+F 2 "" H 7450 2500 50  0001 C CNN
+F 3 "" H 7450 2500 50  0001 C CNN
+	1    7550 2900
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7050 2900 7050 1850
+Text GLabel 7350 2800 0    50   Output ~ 0
+A1_A0
+Wire Wire Line
+	7050 2900 7350 2900
+Wire Wire Line
+	7050 3000 7350 3000
+Text GLabel 6100 3000 2    50   Input ~ 0
+U2_A0
+Wire Wire Line
+	5500 1650 6500 1650
+Wire Wire Line
+	5600 4200 6500 4200
+Wire Wire Line
+	5700 2000 5700 1850
+Wire Wire Line
+	7050 3000 7050 3450
+$Comp
+L Transistor_BJT:BC547 Q2
+U 1 1 5F3574C8
+P 7150 3650
+F 0 "Q2" H 7341 3696 50  0000 L CNN
+F 1 "BC547" H 7341 3605 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-92_Inline" H 7350 3575 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/BC/BC547.pdf" H 7150 3650 50  0001 L CNN
+	1    7150 3650
+	-1   0    0    1   
+$EndComp
+Text GLabel 7350 3650 2    50   Input ~ 0
+U1_D5
+Text GLabel 5100 2900 0    50   Output ~ 0
+Q2_B
+Wire Wire Line
+	7050 3850 7050 4200
+Wire Wire Line
+	5700 1850 7050 1850
+Wire Wire Line
+	6500 4200 7050 4200
+Connection ~ 6500 4200
+$Comp
+L RF:nRF24L01P U1
+U 1 1 5F26A887
+P 3650 3300
+F 0 "U1" H 3600 3100 50  0000 L CNN
+F 1 "nRF24L01P" H 3450 3200 50  0000 L CNN
+F 2 "Package_DFN_QFN:QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm" V 3559 4143 50  0001 L CIN
+F 3 "http://www.nordicsemi.com/eng/content/download/2726/34069/file/nRF24L01P_Product_Specification_1_0.pdf" H 3650 3400 50  0001 C CNN
+	1    3650 3300
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
