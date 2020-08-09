@@ -49,13 +49,14 @@ class RelayControlerWidget(GridLayout):
     self.time_end = TextInput(text=relay['end'], multiline=False, halign='center')
     self.add_widget(self.time_end)
 
-    weekdays = ''
-    for weekday in relay['weekdays']:
-      weekdays += f'{weekday}, '
+    # Create the weekday button with the selection popup
+    weekdays_layout = WeekdaysPopupLayout(relay['weekdays'])
 
-    weekdays = weekdays[:-2]
-    weekdays_layout = WeekdaysPopupLayout()
-    self.weekday_button = Button(text=weekdays,
+    weekdays_text = ''
+    for weekday in relay['weekdays']:
+      weekdays_text += f'{weekday}, '
+
+    self.weekday_button = Button(text=weekdays_text[:-2],
                                  on_release=weekdays_layout.popup.open
                                 )
 

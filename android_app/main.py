@@ -11,6 +11,7 @@ from widgets.settings_popup import SettingsPopupLayout
 relays = [{'nr': 1, 'start': '18:00', 'end': '20:00', 'weekdays': ['1']},
           {'nr': 2, 'start': '16:00', 'end': '18:00', 'weekdays': ['2', '4']},
           {'nr': 3, 'start': '18:00', 'end': '20:00', 'weekdays': ['2', '4', '6']},
+          {'nr': 4, 'start': '16:00', 'end': '18:00', 'weekdays': ['2', '4']},
          ]
 # relays = []
 
