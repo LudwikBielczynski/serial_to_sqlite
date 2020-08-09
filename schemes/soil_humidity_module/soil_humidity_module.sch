@@ -56,8 +56,6 @@ A1_D8
 Text GLabel 6150 4150 0    50   Input ~ 0
 U1_CE
 Wire Wire Line
-	3300 2600 3300 3800
-Wire Wire Line
 	3300 5150 4600 5150
 Wire Wire Line
 	3300 4200 3300 5150
@@ -66,8 +64,6 @@ Wire Wire Line
 Wire Wire Line
 	6650 5150 6650 4950
 Connection ~ 4600 5150
-Wire Wire Line
-	6550 2600 6550 2950
 $Comp
 L Device:R R3
 U 1 1 5F2DE1F5
@@ -93,9 +89,6 @@ $EndComp
 Wire Wire Line
 	7550 5150 7550 4550
 Connection ~ 6650 5150
-Connection ~ 6550 2600
-Wire Wire Line
-	7550 2600 7550 3750
 Wire Wire Line
 	7550 4050 7550 4150
 Connection ~ 7550 4150
@@ -103,11 +96,6 @@ Wire Wire Line
 	7550 4150 7550 4250
 Wire Wire Line
 	5800 3750 6150 3750
-Wire Wire Line
-	3300 2600 4600 2600
-Connection ~ 4600 2600
-Wire Wire Line
-	4600 2600 5150 2600
 $Comp
 L Device:R R1
 U 1 1 5F31B617
@@ -119,7 +107,6 @@ F 3 "~" H 5150 2750 50  0001 C CNN
 	1    5150 2750
 	1    0    0    -1  
 $EndComp
-Connection ~ 5150 2600
 Wire Wire Line
 	4600 2700 4600 2600
 Wire Wire Line
@@ -133,7 +120,7 @@ F 1 "IRL540N" H 4905 2945 50  0000 L CNN
 F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 4950 2825 50  0001 L CIN
 F 3 "https://www.infineon.com/dgdl/irl540npbf.pdf?fileId=5546d462533600a40153565fc2a62567" H 4700 2900 50  0001 L CNN
 	1    4700 2900
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	4900 2900 5150 2900
@@ -159,8 +146,6 @@ Wire Wire Line
 	7150 4150 7550 4150
 Wire Wire Line
 	4600 5150 6650 5150
-Wire Wire Line
-	5150 2600 6550 2600
 $Comp
 L trial:SEN0193 U2
 U 1 1 5F33FAC0
@@ -182,8 +167,6 @@ Wire Wire Line
 	8100 3950 8400 3950
 Text GLabel 7150 3950 2    50   Input ~ 0
 U2_A0
-Wire Wire Line
-	6550 2600 7550 2600
 Wire Wire Line
 	6650 5150 7550 5150
 Wire Wire Line
@@ -223,4 +206,23 @@ F 3 "http://www.nordicsemi.com/eng/content/download/2726/34069/file/nRF24L01P_Pr
 	1    4700 4250
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	3300 2450 4600 2450
+Wire Wire Line
+	3300 2450 3300 3800
+Wire Wire Line
+	7550 2450 7550 3750
+Wire Wire Line
+	6550 2450 6550 2950
+Connection ~ 6550 2450
+Wire Wire Line
+	6550 2450 7550 2450
+Wire Wire Line
+	5150 2600 4600 2600
+Wire Wire Line
+	4600 2600 4600 2450
+Connection ~ 4600 2600
+Connection ~ 4600 2450
+Wire Wire Line
+	4600 2450 6550 2450
 $EndSCHEMATC
