@@ -37,33 +37,14 @@ F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 6650 3950 50
 $EndComp
 Text GLabel 6150 4550 0    50   Input ~ 0
 U1_MISO
-Text GLabel 4100 3850 0    50   Output ~ 0
-A1_D12
-Text GLabel 4100 3950 0    50   Output ~ 0
-A1_D13
-Text GLabel 6150 4650 0    50   Input ~ 0
+Text GLabel 6150 4650 0    50   Output ~ 0
 U1_SCK
-Text GLabel 6150 4450 0    50   Input ~ 0
+Text GLabel 6150 4450 0    50   Output ~ 0
 U1_MOSI
-Text GLabel 4100 3750 0    50   Output ~ 0
-A1_D11
-Text GLabel 4100 4050 0    50   Output ~ 0
-A1_D9
 Text GLabel 6150 4250 0    50   Output ~ 0
 U1_CSN
-Text GLabel 4100 4250 0    50   Input ~ 0
-A1_D8
-Text GLabel 6150 4150 0    50   Input ~ 0
+Text GLabel 6150 4150 0    50   Output ~ 0
 U1_CE
-Wire Wire Line
-	3300 5150 4600 5150
-Wire Wire Line
-	3300 4200 3300 5150
-Wire Wire Line
-	4600 5050 4600 5150
-Wire Wire Line
-	6650 5150 6650 4950
-Connection ~ 4600 5150
 $Comp
 L Device:R R3
 U 1 1 5F2DE1F5
@@ -87,65 +68,12 @@ F 3 "~" H 7550 4400 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7550 5150 7550 4550
-Connection ~ 6650 5150
-Wire Wire Line
 	7550 4050 7550 4150
 Connection ~ 7550 4150
 Wire Wire Line
 	7550 4150 7550 4250
 Wire Wire Line
-	5800 3750 6150 3750
-$Comp
-L Device:R R1
-U 1 1 5F31B617
-P 5150 2750
-F 0 "R1" H 5220 2796 50  0000 L CNN
-F 1 "10k" H 5220 2705 50  0000 L CNN
-F 2 "" V 5080 2750 50  0001 C CNN
-F 3 "~" H 5150 2750 50  0001 C CNN
-	1    5150 2750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4600 2700 4600 2600
-Wire Wire Line
-	4600 3100 4600 3450
-$Comp
-L trial:IRL540N Q1
-U 1 1 5F29F1A2
-P 4700 2900
-F 0 "Q1" H 4905 2854 50  0000 L CNN
-F 1 "IRL540N" H 4905 2945 50  0000 L CNN
-F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 4950 2825 50  0001 L CIN
-F 3 "https://www.infineon.com/dgdl/irl540npbf.pdf?fileId=5546d462533600a40153565fc2a62567" H 4700 2900 50  0001 L CNN
-	1    4700 2900
-	-1   0    0    -1  
-$EndComp
-Wire Wire Line
-	4900 2900 5150 2900
-Wire Wire Line
-	5800 2900 5800 3100
-Connection ~ 5150 2900
-Wire Wire Line
-	5150 2900 5800 2900
-$Comp
-L Device:R R2
-U 1 1 5F322358
-P 5800 3250
-F 0 "R2" H 5870 3296 50  0000 L CNN
-F 1 "R" H 5870 3205 50  0000 L CNN
-F 2 "" V 5730 3250 50  0001 C CNN
-F 3 "~" H 5800 3250 50  0001 C CNN
-	1    5800 3250
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5800 3400 5800 3750
-Wire Wire Line
 	7150 4150 7550 4150
-Wire Wire Line
-	4600 5150 6650 5150
 $Comp
 L trial:SEN0193 U2
 U 1 1 5F33FAC0
@@ -168,8 +96,6 @@ Wire Wire Line
 Text GLabel 7150 3950 2    50   Input ~ 0
 U2_A0
 Wire Wire Line
-	6650 5150 7550 5150
-Wire Wire Line
 	6750 2950 6750 2800
 Wire Wire Line
 	8100 3950 8100 4400
@@ -182,47 +108,119 @@ F 1 "BC547" H 8391 4555 50  0000 L CNN
 F 2 "Package_TO_SOT_THT:TO-92_Inline" H 8400 4525 50  0001 L CIN
 F 3 "http://www.fairchildsemi.com/ds/BC/BC547.pdf" H 8200 4600 50  0001 L CNN
 	1    8200 4600
-	-1   0    0    1   
+	-1   0    0    -1  
 $EndComp
-Text GLabel 8400 4600 2    50   Input ~ 0
-U1_D5
 Text GLabel 6150 3850 0    50   Output ~ 0
 Q2_B
 Wire Wire Line
-	8100 4800 8100 5150
-Wire Wire Line
 	6750 2800 8100 2800
 Wire Wire Line
-	7550 5150 8100 5150
-Connection ~ 7550 5150
+	3300 2650 4650 2650
+Wire Wire Line
+	4650 5300 5100 5300
+Connection ~ 4650 5300
+Wire Wire Line
+	3300 5300 4650 5300
+Wire Wire Line
+	4650 5300 4650 5200
+Wire Wire Line
+	5100 5300 6650 5300
+Connection ~ 5100 5300
+Wire Wire Line
+	5100 5000 5550 5000
+Connection ~ 5100 5000
+Wire Wire Line
+	4950 5000 5100 5000
+$Comp
+L trial:IRL540N Q1
+U 1 1 5F29F1A2
+P 4750 5000
+F 0 "Q1" H 4955 4954 50  0000 L CNN
+F 1 "IRL540N" H 4955 5045 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 5000 4925 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/irl540npbf.pdf?fileId=5546d462533600a40153565fc2a62567" H 4750 5000 50  0001 L CNN
+	1    4750 5000
+	-1   0    0    -1  
+$EndComp
 $Comp
 L RF:nRF24L01P U1
 U 1 1 5F26A887
-P 4700 4250
-F 0 "U1" H 4650 4050 50  0000 L CNN
-F 1 "nRF24L01P" H 4500 4150 50  0000 L CNN
-F 2 "Package_DFN_QFN:QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm" V 4609 5093 50  0001 L CIN
-F 3 "http://www.nordicsemi.com/eng/content/download/2726/34069/file/nRF24L01P_Product_Specification_1_0.pdf" H 4700 4350 50  0001 C CNN
-	1    4700 4250
+P 4750 3900
+F 0 "U1" H 4700 3700 50  0000 L CNN
+F 1 "nRF24L01P" H 4550 3800 50  0000 L CNN
+F 2 "Package_DFN_QFN:QFN-20-1EP_4x4mm_P0.5mm_EP2.5x2.5mm" V 4659 4743 50  0001 L CIN
+F 3 "http://www.nordicsemi.com/eng/content/download/2726/34069/file/nRF24L01P_Product_Specification_1_0.pdf" H 4750 4000 50  0001 C CNN
+	1    4750 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 5F31B617
+P 5100 5150
+F 0 "R1" H 5170 5196 50  0000 L CNN
+F 1 "100k" H 5170 5105 50  0000 L CNN
+F 2 "" V 5030 5150 50  0001 C CNN
+F 3 "~" H 5100 5150 50  0001 C CNN
+	1    5100 5150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3300 2450 4600 2450
+	4650 4700 4650 4800
+Text GLabel 4150 3900 0    50   Input ~ 0
+A1_D8
+Text GLabel 4150 3700 0    50   Input ~ 0
+A1_D9
+Text GLabel 4150 3400 0    50   Input ~ 0
+A1_D11
+Text GLabel 4150 3600 0    50   Input ~ 0
+A1_D13
+Text GLabel 4150 3500 0    50   Output ~ 0
+A1_D12
 Wire Wire Line
-	3300 2450 3300 3800
+	5550 3750 6150 3750
 Wire Wire Line
-	7550 2450 7550 3750
+	6650 4950 6650 5300
+Connection ~ 6650 5300
 Wire Wire Line
-	6550 2450 6550 2950
-Connection ~ 6550 2450
+	6650 5300 6750 5300
 Wire Wire Line
-	6550 2450 7550 2450
+	7550 4550 7550 5300
+Connection ~ 7550 5300
 Wire Wire Line
-	5150 2600 4600 2600
+	7550 5300 8100 5300
 Wire Wire Line
-	4600 2600 4600 2450
-Connection ~ 4600 2600
-Connection ~ 4600 2450
+	8100 4800 8100 5300
+Text GLabel 8400 4600 2    50   Input ~ 0
+A1_D5
 Wire Wire Line
-	4600 2450 6550 2450
+	3300 4200 3300 5300
+Wire Wire Line
+	4650 2650 6550 2650
+Connection ~ 4650 2650
+Wire Wire Line
+	4650 2650 4650 3100
+Connection ~ 6550 2650
+Wire Wire Line
+	6550 2650 6550 2950
+Wire Wire Line
+	7550 2650 7550 3750
+Wire Wire Line
+	3300 2650 3300 3800
+Wire Wire Line
+	5550 3750 5550 5000
+Wire Wire Line
+	6750 4950 6750 5300
+Connection ~ 6750 5300
+Wire Wire Line
+	6750 5300 7550 5300
+Wire Wire Line
+	6550 2650 7550 2650
+Wire Wire Line
+	6850 2950 6850 2900
+Wire Wire Line
+	6850 2900 7350 2900
+Wire Wire Line
+	7350 2900 7350 3750
+Wire Wire Line
+	7350 3750 7150 3750
 $EndSCHEMATC
