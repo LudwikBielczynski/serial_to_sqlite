@@ -155,11 +155,11 @@ X E 3 100 -200 100 U 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# trial_IRL540N
+# soil_humidity_module_IRL540N
 #
-DEF trial_IRL540N Q 0 20 Y N 1 F N
+DEF soil_humidity_module_IRL540N Q 0 20 Y N 1 F N
 F0 "Q" 250 75 50 H V L CNN
-F1 "trial_IRL540N" 250 0 50 H V L CNN
+F1 "soil_humidity_module_IRL540N" 250 0 50 H V L CNN
 F2 "Package_TO_SOT_THT:TO-220-3_Vertical" 250 -75 50 H I L CIN
 F3 "" 0 0 50 H I L CNN
 ALIAS IRF3205_copy IRF540N_copy IRF740_copy IRLB8721PBF_copy IRLZ34N_copy IRLZ44N_copy VNP10N07_copy IPP060N06N_copy
