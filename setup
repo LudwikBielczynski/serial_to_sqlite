@@ -15,3 +15,4 @@ pyenv activate $app_name
 pip install -f requirements.txt
 pip install -e $HOME/watering_control_system/repositories
 pip install -e $HOME/watering_control_system/sensor_handler
+pip install -e $HOME/watering_control_system/common

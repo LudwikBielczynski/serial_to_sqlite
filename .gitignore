@@ -1,3 +1,5 @@
 .mypy_cache/*
 */.mypy_cache/*
 *__pycache__*
+common/common.egg-info/dependency_links.txt
+*.egg-info
