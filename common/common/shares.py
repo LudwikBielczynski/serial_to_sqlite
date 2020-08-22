@@ -1,0 +1,1 @@
+LOCAL_DATABASES_PATH = '/usr/local/sqlite'
