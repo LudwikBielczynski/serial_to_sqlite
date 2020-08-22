@@ -8,9 +8,9 @@ RELAY_CHANNELS_BCM_MAP = {
     3: 13,
     4: 16,
     5: 19,
-    6: 26,
-    7: 20,
-    8: 21,
+    6: 20,
+    7: 21,
+    8: 26,
     }
 
 if __name__ == '__main__':
@@ -19,6 +19,7 @@ if __name__ == '__main__':
 
     for pin in RELAY_CHANNELS_BCM_MAP.values():
         GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, GPIO.HIGH)
 
     print('Setup The Relay Module is successful')
     try:
