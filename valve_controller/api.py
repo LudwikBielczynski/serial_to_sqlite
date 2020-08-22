@@ -2,10 +2,16 @@ import time
 
 import RPi.GPIO as GPIO
 
-RELAY_CHANNELS_BCM_MAP = {1: 26,
-                          2: 20,
-                          3: 21
-                         }
+RELAY_CHANNELS_BCM_MAP = {
+    1: 5,
+    2: 6,
+    3: 13,
+    4: 16,
+    5: 19,
+    6: 26,
+    7: 20,
+    8: 21,
+    }
 
 if __name__ == '__main__':
     GPIO.setwarnings(False)
