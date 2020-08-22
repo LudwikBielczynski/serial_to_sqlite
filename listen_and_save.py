@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import os
 from pathlib import Path
@@ -5,8 +6,10 @@ import sqlite3
 
 from serial import Serial
 
-from serial_to_sqlite.database import SoilHumidityTable, BatteryStateTable
+from repositories.database import SoilHumidityTable, BatteryStateTable
+from repositories.database.sqlite import DatabaseSqlite
 from serial_to_sqlite.decode_message import decode_message
+
 os.getcwd()
 
 port = '/dev/ttyACM0'
@@ -15,16 +18,10 @@ baud_rate = 9600
 sqlite_db_path = Path('/usr/local/sqlite')
 sqlite_db_path.mkdir(parents=True, exist_ok=True)
 
-# Create database and tables if needed
-connection = sqlite3.connect(sqlite_db_path / 'sensors_data.db')
-
-soil_humidity_table = SoilHumidityTable(connection)
-if not soil_humidity_table.exists():
-    soil_humidity_table.create()
-
-battery_state_table = BatteryStateTable(connection)
-if not battery_state_table.exists():
-    battery_state_table.create()
+# Create database and initialize objects to handle operations on tables
+database_sqlite = DatabaseSqlite(sqlite_db_path, 'sensors_data.db')
+soil_humidity_table = SoilHumidityTable(database_sqlite)
+battery_state_table = BatteryStateTable(database_sqlite)
 
 # Read from serial port constantly
 with Serial(port, baud_rate) as serial:
@@ -35,7 +32,17 @@ with Serial(port, baud_rate) as serial:
                         .replace('\n', '')
         if 'Rx' == message.split('=')[0]:
             transmitter_name, soil_humidity_value, battery_state = decode_message(message)
-            soil_humidity_table.insert(transmitter_name, soil_humidity_value)
-            battery_state_table.insert(transmitter_name, battery_state)
+
+            # Prepare message
+            now = datetime.now()
+            soil_humidity_table.insert({'insert_datetime': now,
+                                        'transmitter_name': transmitter_name,
+                                        'sensor_value': soil_humidity_value,
+                                       })
+            battery_state_table.insert({'insert_datetime': now,
+                                        'transmitter_name': transmitter_name,
+                                        'sensor_value': battery_state,
+                                       })
+
             # print(message)
 # connection.close()

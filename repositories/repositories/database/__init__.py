@@ -1,0 +1,2 @@
+from repositories.database.soil_humidity import SoilHumidityTable
+from repositories.database.battery_state import BatteryStateTable

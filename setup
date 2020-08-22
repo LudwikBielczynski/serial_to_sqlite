@@ -13,3 +13,4 @@ pyenv install 3.7.6
 pyenv virtualenv 3.7.6 $app_name
 pyenv activate $app_name
 pip install -f requirements.txt
+pip install -e $HOME/watering_control_system/repositories
