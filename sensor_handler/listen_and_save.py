@@ -8,7 +8,7 @@ from serial import Serial
 
 from repositories.database import SoilHumidityTable, BatteryStateTable
 from repositories.database.sqlite import DatabaseSqlite
-from serial_to_sqlite.decode_message import decode_message
+from sensor_handler.decode_message import decode_message
 
 os.getcwd()
 
