@@ -4,7 +4,7 @@ Description=A listener for the soil humidity sensors
 [Service]
 Type=exec
 User=pi
-ExecStart=/home/pi/.pyenv/versions/3.7.6/envs/watering_system/bin/python3.7 /home/pi/watering_control_system/sensor_handler/listen_and_save.py
+ExecStart=/home/pi/.pyenv/versions/3.7.7/envs/watering_system/bin/python3.7 /home/pi/watering_control_system/sensor_handler/listen_and_save.py
 KillMode=process
 Restart=on-failure
 
