@@ -34,3 +34,19 @@ class WateringSchedule(Table):
             return False
         else:
             return True
+
+    def check_if_already_scheduled(self,
+                                   channel: int,
+                                   weekday: int
+                                  ) -> bool:
+        '''Watering should be only sceduled once per day per section'''
+        cases = f'''
+            channel = {channel}
+            AND weekday = {weekday}
+        '''
+        tasks = super().select(cases=cases)
+
+        if tasks.empty:
+            return False
+        else:
+            return True
