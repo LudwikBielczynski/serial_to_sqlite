@@ -118,13 +118,13 @@ def delete_watering_schedule_route(channel: int,
 
     return jsonify({'status': 'data was deleted'})
 
-@app.route('/get_schedule/', methods=['GET'])
+@app.route('/get_schedule', methods=['GET'])
 def get_schedule_route():
     '''
     This method is used to get the full watering schedul
 
     Example:
-    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/get_schedule_route
+    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_schedule
     '''
 
     # Delete the local database a new schedule
@@ -132,7 +132,7 @@ def get_schedule_route():
     watering_schedule = WateringSchedule(database_sqlite)
     schedule = watering_schedule.get_all_schedule()
 
-    return jsonify(schedule)
+    return jsonify(schedule.T.to_dict())
 
 @app.errorhandler(404)
 def not_found(error):
