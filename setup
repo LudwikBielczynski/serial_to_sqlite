@@ -7,12 +7,21 @@ sqlite_db_path = "/usr/local/sqlite/"
 sudo mkdir $sqlite_db_path
 sudo chown -R $USER:$USER $sqlite_db_path
 
+# TODO: Check if pyenv should be installed and virtualenv created
 curl https://pyenv.run | bash
 pyenv install 3.7.6
 
-pyenv virtualenv 3.7.6 $app_name
-pyenv activate $app_name
+pyenv virtualenv 3.7.6 watering_system
+pyenv activate watering_system
+
 pip install -f requirements.txt
 pip install -e $HOME/watering_control_system/repositories
 pip install -e $HOME/watering_control_system/sensor_handler
 pip install -e $HOME/watering_control_system/common
+pip install -e $HOME/watering_control_system/watering_controller
+
+sudo cp $HOME/watering_control_system/watering_controller/services/watering_scheduler.service /etc/systemd/system/
+sudo systemctl enable watering_scheduler.service
+
+sudo cp $HOME/watering_control_system/watering_controller/services/watering_starter.service /etc/systemd/system/
+sudo systemctl enable watering_starter.service
