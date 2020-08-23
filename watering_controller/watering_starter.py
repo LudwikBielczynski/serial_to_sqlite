@@ -39,9 +39,9 @@ if __name__ == '__main__':
 
     while True:
         # Check tasks that should be triggered now
-        watering_schedule.check_task(pd.Timestamp.utcnow())
+        should_water = watering_schedule.check_should_water(pd.Timestamp.utcnow())
 
-        # Trigger on the relay a channel corresponding to the section
+        # keep or change state on the section
 
 
         time.sleep(SLEEP_TIME_BETWEEN_CHECKS)

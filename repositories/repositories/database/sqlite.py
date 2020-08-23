@@ -107,7 +107,9 @@ class Table():
         if columns:
             results_df = pd.DataFrame(results, columns=columns)
         else:
-            results_df = pd.DataFrame(results, columns=self.meta_columns)
+            columns = ['id']
+            columns.extend(self.meta_columns)
+            results_df = pd.DataFrame(results, columns=columns)
 
         return results_df
 
