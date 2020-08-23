@@ -27,7 +27,7 @@ class WateringSchedule(Table):
             AND start_time_utc < '{now_utc.strftime("%H:%M")}'
             AND end_time_utc > '{now_utc.strftime("%H:%M")}'
             AND weekday = {weekday}
-        '''
+            '''
         tasks = super().select(cases=cases)
 
         if tasks.empty:
@@ -43,10 +43,25 @@ class WateringSchedule(Table):
         cases = f'''
             channel = {channel}
             AND weekday = {weekday}
-        '''
+            '''
         tasks = super().select(cases=cases)
 
         if tasks.empty:
             return False
         else:
             return True
+
+    def delete_for_channel_weekday_schedule(self,
+                                            channel: int,
+                                            weekday: int
+                                           ):
+        '''Needed to clean the data for a specific channel and weekday combination'''
+        cases = f'''
+            channel = {channel}
+            AND weekday = {weekday}
+            '''
+        super().delete(cases=cases)
+
+    def get_all_schedule(self):
+        '''Function needed for the UI'''
+        return super().select()
