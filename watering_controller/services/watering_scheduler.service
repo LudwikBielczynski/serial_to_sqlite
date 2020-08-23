@@ -1,0 +1,12 @@
+[Unit]
+Description=A service listening to HTTP requests to handle watering schedule saved in the local database
+
+[Service]
+Type=exec
+User=pi
+ExecStart=/home/pi/.pyenv/versions/3.7.6/envs/watering_system/bin/python3.7 /home/pi/watering_control_system/watering_controller/watering_scheduler.py
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
