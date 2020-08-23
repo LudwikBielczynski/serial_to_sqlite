@@ -1,0 +1,12 @@
+[Unit]
+Description=A service that reads schedule from local database and triggers relays on/off when specified conditions are met
+
+[Service]
+Type=exec
+User=pi
+ExecStart=/home/pi/.pyenv/versions/3.7.6/envs/watering_system/bin/python3.7 /home/pi/watering_control_system/watering_controller/watering_starter.py
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

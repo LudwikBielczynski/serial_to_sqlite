@@ -55,7 +55,7 @@ def test_check_should_water(tmp_path):
     watering_schedule.schedule_watering(scheduled_watering)
 
     # Act
-    should_water = watering_schedule.check_should_water(pd.to_datetime('11:00'))
+    should_water = watering_schedule.check_should_water(1, pd.to_datetime('11:00'))
 
     # Assert
     assert should_water is True
@@ -78,7 +78,7 @@ def test_check_should_water_dont_water(tmp_path):
     watering_schedule.schedule_watering(scheduled_watering)
 
     # Act
-    should_water = watering_schedule.check_should_water(pd.to_datetime('21:00'))
+    should_water = watering_schedule.check_should_water(1, pd.to_datetime('21:00'))
 
     # Assert
     assert should_water is False
