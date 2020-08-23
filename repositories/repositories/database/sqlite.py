@@ -87,6 +87,8 @@ class Table():
                cases: str = ''
               ) -> pd.DataFrame:
         '''Function used to select the data'''
+        if not self._exists():
+            self._create()
 
         query = 'SELECT '
         if columns is None:
