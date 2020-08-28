@@ -15,33 +15,22 @@ class RootScreen(GridLayout):
     super(RootScreen, self).__init__(**kwargs)
     self.rows = 3
 
-    popup_layout = SettingsPopupLayout()
+    self.popup_layout = SettingsPopupLayout()
     self.settings_button = Button(text='>',
                                   size_hint=(None, None),
                                   width=int(Window.height)/12.,
                                   height=int(Window.height)/12.,
-                                  on_release=popup_layout.popup.open
+                                  on_release=self.popup_layout.popup.open
                                  )
     self.add_widget(self.settings_button)
 
-    # self.update_button = Button(text='Update',
-    #                             width=int(Window.height)/12.,
-    #                             height=int(Window.height)/50.,)
-    # self.add_widget(self.update_button)
-
-    relay_controler_layout = RelayControlersLayout(orientation='tb-lr')
-    self.add_widget(relay_controler_layout)
+    self.relay_controler_layout = RelayControlersLayout(orientation='tb-lr')
+    self.add_widget(self.relay_controler_layout)
 
 class WateringControlSystemApp(App):
 
   def build(self):
-    # Load relays state
-    widgets.state.relays = [
-      {'nr': 1, 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
-      {'nr': 2, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-      {'nr': 3, 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
-      {'nr': 4, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-      ]
-    return RootScreen()
+    root = RootScreen()
+    return root
 
 WateringControlSystemApp().run()

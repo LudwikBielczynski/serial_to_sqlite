@@ -6,6 +6,24 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
+import widgets.state
+
+def on_username_input(instance, value):
+  widgets.username = value
+
+def on_password_input(instance, value):
+  widgets.password = value
+
+def login(instance):
+  # FIXME: Send HTTP request to host and unpack response
+  print('logged in')
+  widgets.state.relays = [
+    {'nr': 1, 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
+    {'nr': 2, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+    {'nr': 3, 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
+    {'nr': 4, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+    ]
+
 class SettingsPopupContent(GridLayout):
 
   def __init__(self, **kwargs):
@@ -13,15 +31,19 @@ class SettingsPopupContent(GridLayout):
     self.rows = 3
 
     self.add_widget(Label(text='User Name'))
-    self.username = TextInput(multiline=False)
-    self.add_widget(self.username)
+    self.username_input = TextInput(text=widgets.state.username, multiline=False)
+    self.username_input.bind(text=on_username_input)
+    self.add_widget(self.username_input)
 
     self.add_widget(Label(text='Password'))
-    self.password = TextInput(password=True, multiline=False)
-    self.add_widget(self.password)
+    self.password_input = TextInput(text=widgets.state.password, password=True, multiline=False)
+    self.password_input.bind(text=on_password_input)
+    self.add_widget(self.password_input)
 
     self.add_widget(Label(text=''))
-    self.button_login = Button(text='Log in')
+    self.button_login = Button(text='Log in',
+                               on_release=login
+                              )
     self.add_widget(self.button_login)
 
 class SettingsPopupLayout(AnchorLayout):
