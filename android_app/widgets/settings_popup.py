@@ -8,18 +8,23 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 import requests
+from requests.exceptions import ConnectionError
 
 import widgets.state
 
 def login(instance):
   # TODO: Authentication
-  url = f'http://{widgets.state.host}:5000/get_relay_configuration'
-  response = requests.get(url=url)
-  channel_section_name_map = response.json()
+  try:
+    url = f'http://{widgets.state.host}:5000/get_relay_configuration'
+    response = requests.get(url=url, timeout=5)
+    channel_section_name_map = response.json()
 
-  url = f'http://{widgets.state.host}:5000/get_schedule'
-  response = requests.get(url=url)
-  schedules = response.json()
+    url = f'http://{widgets.state.host}:5000/get_schedule'
+    response = requests.get(url=url, timeout=5)
+    schedules = response.json()
+  except ConnectionError:
+    channel_section_name_map = {}
+    schedules = []
 
   def format_relays_data(channel_section_name_map: Dict[str, str],
                          schedules: Dict[str, Dict[str, Any]]
