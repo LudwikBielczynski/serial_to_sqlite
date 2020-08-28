@@ -124,10 +124,28 @@ class RelayControlersLayout(StackLayout):
                                     )
     self.add_widget(self.update_view_button)
 
+    self.clear_all_button = Button(text='Clear all',
+                                     size_hint=(None, None),
+                                     width=Window.width,
+                                     height=int(Window.height)/12.,
+
+                                    )
+    self.add_widget(self.clear_all_button)
+
+    self.send_to_host_button = Button(text='Send to host',
+                                     size_hint=(None, None),
+                                     width=Window.width,
+                                     height=int(Window.height)/12.,
+
+                                    )
+    self.add_widget(self.send_to_host_button)
+
   def _remove_relay_controler_widgets(self):
     for relay_controler_widget in self.relays_control_widgets:
       self.remove_widget(relay_controler_widget)
     self.remove_widget(self.update_view_button)
+    self.remove_widget(self.clear_all_button)
+    self.remove_widget(self.send_to_host_button)
 
   def update_relay_buttons(self, instance):
     self._remove_relay_controler_widgets()
