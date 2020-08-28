@@ -1,3 +1,5 @@
+from typing import Any, Dict, List
+
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.button import Button
@@ -5,20 +7,54 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+import requests
 
 import widgets.state
 
-
-
 def login(instance):
-  # FIXME: Send HTTP request to host and unpack response
-  print('logged in')
-  widgets.state.relays = [
-    {'nr': 1, 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
-    {'nr': 2, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-    {'nr': 3, 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
-    {'nr': 4, 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-    ]
+  # TODO: Authentication
+
+  url = f'http://{widgets.state.host}:5000/get_relay_configuration'
+  response = requests.get(url=url)
+  channel_section_name_map = response.json()
+
+  url = f'http://{widgets.state.host}:5000/get_schedule'
+  response = requests.get(url=url)
+  schedules = response.json()
+
+  def format_relays_data(channel_section_name_map: Dict[str, str],
+                         schedules: Dict[str, Dict[str, Any]]
+                        ) -> List[Dict[str, Any]]:
+    '''Function needed to reformat data from the relay_sceduler to the android API'''
+    def create_default_realy(channel: str, section_name: str) -> Dict[str, Any]:
+      return {
+          'channel': int(channel),
+          'section_name': section_name,
+          'start': '19:00',
+          'end': '19:15',
+          'weekdays': []
+          }
+    relays = [create_default_realy(channel, section_name)
+              for channel, section_name in channel_section_name_map.items()]
+
+    if schedules:
+      for schedule in schedules.values():
+        for relay_nr, relay_default in enumerate(relays):
+          if relay_default['channel'] == schedule['channel']:
+            relays[relay_nr]['start'] = schedule['start_time_utc']
+            relays[relay_nr]['end'] = schedule['end_time_utc']
+            relays[relay_nr]['weekdays'].append(schedule['weekday'])
+
+    return relays
+
+  widgets.state.relays = format_relays_data(channel_section_name_map, schedules)
+
+  # widgets.state.relays = [
+  #   {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
+  #   {'channel': 2, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+  #   {'channel': 3, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
+  #   {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+  #   ]
 
 class SettingsPopupContent(GridLayout):
 

@@ -21,7 +21,7 @@ def update_relays_state(instance, value):
 
   relay_to_modify = [relay
                      for relay in widgets.state.relays
-                     if relay['nr'] == instance.relay_nr
+                     if relay['channel'] == instance.relay_nr
                     ][0]
 
   if value:
@@ -31,7 +31,7 @@ def update_relays_state(instance, value):
   relay_to_modify['weekdays'].sort()
 
   for idx, relay in enumerate(widgets.state.relays):
-    if relay['nr'] == instance.relay_nr:
+    if relay['channel'] == instance.relay_nr:
       widgets.state.relays[idx] = relay_to_modify
 
 class WeekdaysPopupContent(GridLayout):

@@ -47,7 +47,7 @@ class RelayControlerWidget(GridLayout):
     self._generate_widgets()
 
   def _generate_widgets(self) -> None:
-    self.label = Label(text=f'Relay {self.relay["nr"]}')
+    self.label = Label(text=f'{self.relay["section_name"]} ({self.relay["channel"]})')
 
     def validate_time_input(time_str):
       '''Checks if the string representing time is well formed'''
@@ -65,7 +65,7 @@ class RelayControlerWidget(GridLayout):
       is_valid = validate_time_input(instance.text)
       if is_valid:
         for relay_nr, relay in enumerate(widgets.state.relays):
-          if relay['nr'] == self.relay['nr']:
+          if relay['channel'] == self.relay['channel']:
             widgets.state.relays[relay_nr]['start'] = instance.text
 
     self.time_start = TextInput(text=self.relay['start'],
@@ -78,7 +78,7 @@ class RelayControlerWidget(GridLayout):
       is_valid = validate_time_input(instance.text)
       if is_valid:
         for relay_nr, relay in enumerate(widgets.state.relays):
-          if relay['nr'] == self.relay['nr']:
+          if relay['channel'] == self.relay['channel']:
             widgets.state.relays[relay_nr]['end'] = instance.text
 
     self.time_end = TextInput(text=self.relay['end'],
@@ -86,7 +86,7 @@ class RelayControlerWidget(GridLayout):
                               halign='center',
                               on_text_validate=_time_end_on_enter,
                              )
-    self.weekdays_layout = WeekdaysPopupLayout(self.relay['nr'], self.relay['weekdays'])
+    self.weekdays_layout = WeekdaysPopupLayout(self.relay['channel'], self.relay['weekdays'])
     self.weekday_button = WeekdaysButton(self.relay,
                                          on_release=self.weekdays_layout.popup.open,
                                         )
