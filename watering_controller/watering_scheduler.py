@@ -121,7 +121,7 @@ def delete_watering_schedule_route(channel: int,
 @app.route('/get_schedule', methods=['GET'])
 def get_schedule_route():
     '''
-    This method is used to get the full watering schedul
+    This method is used to get the full watering scheduls
 
     Example:
     curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_schedule
@@ -133,6 +133,16 @@ def get_schedule_route():
     schedule = watering_schedule.get_all_schedule()
 
     return jsonify(schedule.T.to_dict())
+
+@app.route('/get_relay_configuration', methods=['GET'])
+def get_relay_configuration_route():
+    '''
+    This method is used to get relay configuration
+
+    Example:
+    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_relay_configuration
+    '''
+    return jsonify(load_channel_section_name_map())
 
 @app.errorhandler(404)
 def not_found(error):
