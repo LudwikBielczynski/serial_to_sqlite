@@ -2,4 +2,5 @@ flask
 pandas
 pyserial
 pytest
+requests
 RPi.GPIO

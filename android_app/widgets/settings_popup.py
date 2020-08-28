@@ -13,7 +13,6 @@ import widgets.state
 
 def login(instance):
   # TODO: Authentication
-
   url = f'http://{widgets.state.host}:5000/get_relay_configuration'
   response = requests.get(url=url)
   channel_section_name_map = response.json()
