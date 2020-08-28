@@ -8,11 +8,7 @@ from kivy.uix.textinput import TextInput
 
 import widgets.state
 
-def on_username_input(instance, value):
-  widgets.username = value
 
-def on_password_input(instance, value):
-  widgets.password = value
 
 def login(instance):
   # FIXME: Send HTTP request to host and unpack response
@@ -28,15 +24,26 @@ class SettingsPopupContent(GridLayout):
 
   def __init__(self, **kwargs):
     super(SettingsPopupContent, self).__init__(**kwargs)
-    self.rows = 3
+    self.rows = 4
+
+    self.add_widget(Label(text='Host'))
+    self.host_input = TextInput(text=widgets.state.host, multiline=False)
+    def on_host_input(instance, value):
+      widgets.host = value
+    self.host_input.bind(text=on_host_input)
+    self.add_widget(self.host_input)
 
     self.add_widget(Label(text='User Name'))
     self.username_input = TextInput(text=widgets.state.username, multiline=False)
+    def on_username_input(instance, value):
+      widgets.username = value
     self.username_input.bind(text=on_username_input)
     self.add_widget(self.username_input)
 
     self.add_widget(Label(text='Password'))
     self.password_input = TextInput(text=widgets.state.password, password=True, multiline=False)
+    def on_password_input(instance, value):
+      widgets.password = value
     self.password_input.bind(text=on_password_input)
     self.add_widget(self.password_input)
 
@@ -54,5 +61,5 @@ class SettingsPopupLayout(AnchorLayout):
     self.popup = Popup(title='Settings',
                        content=settings_popup_content,
                        size_hint=(None, None),
-                       size=(Window.width*0.9, Window.height*0.25),
+                       size=(Window.width*0.9, Window.height*0.3),
                       )

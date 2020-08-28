@@ -29,18 +29,14 @@ class WeekdaysButton(Button):
 
   def __init__(self, relay: Dict[str, Any], **kwargs):
     self.relay = relay
-    super(WeekdaysButton, self).__init__(text=self.create_text_label(),
+    super(WeekdaysButton, self).__init__(text=self._create_text_label(),
                                          **kwargs)
 
-  def create_text_label(self):
+  def _create_text_label(self):
     weekdays_text = ''
     for weekday in self.relay['weekdays']:
-      weekdays_text += f'{weekday},'
-    return weekdays_text[:-1]
-
-  def update(self, relay: Dict[str, Any]):
-    self.relay = relay
-    self.text = self.create_text_label()
+      weekdays_text += f'{weekday}'
+    return weekdays_text
 
 class RelayControlerWidget(GridLayout):
 
@@ -48,9 +44,9 @@ class RelayControlerWidget(GridLayout):
     super(RelayControlerWidget, self).__init__(**kwargs)
     self.cols = 5
     self.relay = relay
-    self.generate_widgets()
+    self._generate_widgets()
 
-  def generate_widgets(self) -> None:
+  def _generate_widgets(self) -> None:
     self.label = Label(text=f'Relay {self.relay["nr"]}')
 
     def validate_time_input(time_str):
@@ -65,8 +61,7 @@ class RelayControlerWidget(GridLayout):
           is_valid = False
       return is_valid
 
-
-    def time_start_on_enter(instance):
+    def _time_start_on_enter(instance):
       is_valid = validate_time_input(instance.text)
       if is_valid:
         for relay_nr, relay in enumerate(widgets.state.relays):
@@ -76,10 +71,10 @@ class RelayControlerWidget(GridLayout):
     self.time_start = TextInput(text=self.relay['start'],
                                 multiline=False,
                                 halign='center',
-                                on_text_validate=time_start_on_enter,
+                                on_text_validate=_time_start_on_enter,
                                )
 
-    def time_end_on_enter(instance):
+    def _time_end_on_enter(instance):
       is_valid = validate_time_input(instance.text)
       if is_valid:
         for relay_nr, relay in enumerate(widgets.state.relays):
@@ -89,7 +84,7 @@ class RelayControlerWidget(GridLayout):
     self.time_end = TextInput(text=self.relay['end'],
                               multiline=False,
                               halign='center',
-                              on_text_validate=time_end_on_enter,
+                              on_text_validate=_time_end_on_enter,
                              )
     self.weekdays_layout = WeekdaysPopupLayout(self.relay['nr'], self.relay['weekdays'])
     self.weekday_button = WeekdaysButton(self.relay,
@@ -103,9 +98,6 @@ class RelayControlerWidget(GridLayout):
     self.add_widget(self.weekday_button)
     self.add_widget(self.manual_checkbox)
 
-  def update_weekday_button_text(self, relay: Dict[str, Any]):
-    self.weekday_button.update(relay)
-
 class RelayControlersLayout(StackLayout):
 
   def __init__(self, **kwargs):
@@ -113,9 +105,9 @@ class RelayControlersLayout(StackLayout):
     self.add_widget(TopLabels(size_hint=(1, 0.06), spacing=(0, 0),))
     self.relays_control_widgets = []
 
-    self.create_relay_controler_widgets()
+    self._create_relay_controler_widgets()
 
-  def create_relay_controler_widgets(self):
+  def _create_relay_controler_widgets(self):
     for relay in widgets.state.relays:
       relay_controler_widget = RelayControlerWidget(relay,
                                                     size_hint=(1, 0.06),
@@ -132,11 +124,11 @@ class RelayControlersLayout(StackLayout):
                                     )
     self.add_widget(self.update_view_button)
 
-  def remove_relay_controler_widgets(self):
+  def _remove_relay_controler_widgets(self):
     for relay_controler_widget in self.relays_control_widgets:
       self.remove_widget(relay_controler_widget)
     self.remove_widget(self.update_view_button)
 
   def update_relay_buttons(self, instance):
-    self.remove_relay_controler_widgets()
-    self.create_relay_controler_widgets()
+    self._remove_relay_controler_widgets()
+    self._create_relay_controler_widgets()
