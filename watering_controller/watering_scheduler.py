@@ -21,7 +21,7 @@ app = Flask(__name__)
 DEFAULT_APP_PORT = 5000
 
 def check_inputs(channel: int,
-                 weekday: int,
+                 weekday: Optional[int] = None,
                  start_time_utc: Optional[str] = None,
                  end_time_utc: Optional[str] = None,
                 ):
@@ -29,8 +29,9 @@ def check_inputs(channel: int,
     if channel not in channel_section_name_map.keys():
         raise AttributeError('The channel was not set in the configuration')
 
-    if weekday not in range(0,8):
-        raise AttributeError('For weekdays only values from 0-7 are acceptable')
+    if weekday:
+        if weekday not in range(0,8):
+            raise AttributeError('For weekdays only values from 0-7 are acceptable')
 
     if (not start_time_utc is None) & (not end_time_utc is None):
         def check_time(time):
@@ -58,6 +59,32 @@ def check_readiness() -> str:
     curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/health/ready
     '''
     return jsonify({'status': 'ready'})
+
+@app.route('/get_schedule', methods=['GET'])
+def get_schedule_route():
+    '''
+    This method is used to get the full watering scheduls
+
+    Example:
+    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_schedule
+    '''
+
+    # Delete the local database a new schedule
+    database_sqlite = DatabaseSqlite(LOCAL_DATABASES_PATH, 'watering_schedule.db')
+    watering_schedule = WateringSchedule(database_sqlite)
+    schedule = watering_schedule.get_all_schedule()
+
+    return jsonify(schedule.T.to_dict())
+
+@app.route('/get_relay_configuration', methods=['GET'])
+def get_relay_configuration_route():
+    '''
+    This method is used to get relay configuration
+
+    Example:
+    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_relay_configuration
+    '''
+    return jsonify(load_channel_section_name_map())
 
 @app.route('/schedule_watering/<int:channel>_<start_time_utc>-<end_time_utc>_<int:weekday>', methods=['PUT'])
 def schedule_watering_route(channel: int,
@@ -98,10 +125,8 @@ def schedule_watering_route(channel: int,
 
     return jsonify({'status': 'data added to local database'})
 
-@app.route('/delete_watering_schedule/<int:channel>_<int:weekday>', methods=['PUT'])
-def delete_watering_schedule_route(channel: int,
-                                   weekday: int,
-                                  ):
+@app.route('/ delete_for_channel_weekday_watering_schedule/<int:channel>_<int:weekday>', methods=['PUT'])
+def delete_for_channel_weekday_watering_schedule_route(channel: int, weekday: int):
     '''
     This method is used to clear watering schedule for a selected weekday channel combination.
 
@@ -116,33 +141,25 @@ def delete_watering_schedule_route(channel: int,
     watering_schedule = WateringSchedule(database_sqlite)
     watering_schedule.delete_for_channel_weekday_schedule(channel, weekday)
 
-    return jsonify({'status': 'data was deleted'})
+    return jsonify({'status': f'data for channel {channel} and weekday {weekday} was deleted'})
 
-@app.route('/get_schedule', methods=['GET'])
-def get_schedule_route():
+@app.route('/ delete_for_channel_watering_schedule/<int:channel>', methods=['PUT'])
+def delete_for_channel_watering_schedule_route(channel: int):
     '''
-    This method is used to get the full watering scheduls
+    This method is used to clear watering schedule for a selected weekday channel combination.
 
     Example:
-    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_schedule
+    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/delete_watering_schedule/1_1
     '''
+    # Perform checks of all attributes
+    check_inputs(channel)
 
     # Delete the local database a new schedule
     database_sqlite = DatabaseSqlite(LOCAL_DATABASES_PATH, 'watering_schedule.db')
     watering_schedule = WateringSchedule(database_sqlite)
-    schedule = watering_schedule.get_all_schedule()
+    watering_schedule.delete_for_channel_schedule(channel)
 
-    return jsonify(schedule.T.to_dict())
-
-@app.route('/get_relay_configuration', methods=['GET'])
-def get_relay_configuration_route():
-    '''
-    This method is used to get relay configuration
-
-    Example:
-    curl -i -H "Content-Type: application/json" -X GET http://localhost:5000/get_relay_configuration
-    '''
-    return jsonify(load_channel_section_name_map())
+    return jsonify({'status': f'data for channel {channel} was deleted'})
 
 @app.errorhandler(404)
 def not_found(error):

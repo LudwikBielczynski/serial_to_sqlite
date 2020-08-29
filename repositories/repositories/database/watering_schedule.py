@@ -51,14 +51,18 @@ class WateringSchedule(Table):
         else:
             return True
 
-    def delete_for_channel_weekday_schedule(self,
-                                            channel: int,
-                                            weekday: int
-                                           ):
+    def delete_for_channel_weekday_schedule(self, channel: int, weekday: int) -> None:
         '''Needed to clean the data for a specific channel and weekday combination'''
         cases = f'''
             channel = {channel}
             AND weekday = {weekday}
+            '''
+        super().delete(cases=cases)
+
+    def delete_for_channel_schedule(self, channel: int) -> None:
+        '''Needed to clean the data for a specific channel'''
+        cases = f'''
+            channel = {channel}
             '''
         super().delete(cases=cases)
 
