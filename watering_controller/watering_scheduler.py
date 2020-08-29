@@ -47,8 +47,11 @@ def check_inputs(channel: int,
         check_time(start_time_utc)
         check_time(end_time_utc)
 
-        if start_time_utc >= end_time_utc:
+        if int(start_time_utc.split(':')[0]) > int(end_time_utc.split(':')[0]):
             raise AttributeError('The end time should be later than the start time')
+        elif int(start_time_utc.split(':')[0]) == int(end_time_utc.split(':')[0]):
+            if int(start_time_utc.split(':')[1]) > int(end_time_utc.split(':')[1]):
+                raise AttributeError('The end time should be later than the start time')
 
 @app.route('/health/ready', methods=['GET'])
 def check_readiness() -> str:
