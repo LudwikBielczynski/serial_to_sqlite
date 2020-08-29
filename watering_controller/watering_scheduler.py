@@ -125,13 +125,13 @@ def schedule_watering_route(channel: int,
 
     return jsonify({'status': 'data added to local database'})
 
-@app.route('/ delete_for_channel_weekday_watering_schedule/<int:channel>_<int:weekday>', methods=['PUT'])
+@app.route('/delete_for_channel_weekday_watering_schedule/<int:channel>_<int:weekday>', methods=['PUT'])
 def delete_for_channel_weekday_watering_schedule_route(channel: int, weekday: int):
     '''
     This method is used to clear watering schedule for a selected weekday channel combination.
 
     Example:
-    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/delete_watering_schedule/1_1
+    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/delete_for_channel_weekday_watering_schedule/1_1
     '''
     # Perform checks of all attributes
     check_inputs(channel, weekday)
@@ -143,13 +143,13 @@ def delete_for_channel_weekday_watering_schedule_route(channel: int, weekday: in
 
     return jsonify({'status': f'data for channel {channel} and weekday {weekday} was deleted'})
 
-@app.route('/ delete_for_channel_watering_schedule/<int:channel>', methods=['PUT'])
+@app.route('/delete_for_channel_watering_schedule/<int:channel>', methods=['PUT'])
 def delete_for_channel_watering_schedule_route(channel: int):
     '''
     This method is used to clear watering schedule for a selected weekday channel combination.
 
     Example:
-    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/delete_watering_schedule/1_1
+    curl -i -H "Content-Type: application/json" -X PUT http://localhost:5000/delete_for_channel_watering_schedule/1
     '''
     # Perform checks of all attributes
     check_inputs(channel)
