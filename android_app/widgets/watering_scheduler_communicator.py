@@ -48,10 +48,23 @@ class WateringSchedulerCommunicator:
             try:
                 url = f"http://{self.host}:5000/delete_for_channel_watering_schedule/{relay['channel']}"
                 response = requests.put(url=url, timeout=5)
-
+                print(response.text)
             except ConnectionError:
                 pass
 
     def send_all_schedule_to_host(self, relays: List[Dict[str, Any]]) -> None:
-        print(relays)
 
+        for relay in relays:
+            if relay['weekdays']:
+                for weekday in relay['weekdays']:
+                    print(relay)
+                    channel = relay['channel']
+                    start_time_utc = relay['start']
+                    end_time_utc = relay['end']
+
+                    try:
+                        url = f'http://{self.host}:5000/schedule_watering/{channel}_{start_time_utc}-{end_time_utc}_{weekday}'
+                        response = requests.put(url=url, timeout=5)
+                        print(response.text)
+                    except ConnectionError:
+                        pass
