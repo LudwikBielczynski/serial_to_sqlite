@@ -21,7 +21,12 @@ pip install -e $HOME/watering_control_system/common
 pip install -e $HOME/watering_control_system/watering_controller
 
 sudo cp $HOME/watering_control_system/watering_controller/services/watering_scheduler.service /etc/systemd/system/
-sudo systemctl enable watering_scheduler.service
-
 sudo cp $HOME/watering_control_system/watering_controller/services/watering_starter.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+
+sudo systemctl enable watering_scheduler.service
 sudo systemctl enable watering_starter.service
+
+sudo systemctl start watering_scheduler.service
+sudo systemctl start watering_starter.service

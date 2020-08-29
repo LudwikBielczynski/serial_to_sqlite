@@ -8,8 +8,10 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.textinput import TextInput
+import requests
 
 import widgets.state
+from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 from widgets.weedays_popup import WeekdaysPopupLayout
 
 class TopLabels(BoxLayout):
@@ -107,6 +109,8 @@ class RelayControlersLayout(StackLayout):
 
     self._create_relay_controler_widgets()
 
+    self.communicator = WateringSchedulerCommunicator(widgets.state.host)
+
   def _create_relay_controler_widgets(self):
     for relay in widgets.state.relays:
       relay_controler_widget = RelayControlerWidget(relay,
@@ -120,7 +124,7 @@ class RelayControlersLayout(StackLayout):
                                      size_hint=(None, None),
                                      width=Window.width,
                                      height=int(Window.height)/12.,
-                                     on_release=self.update_relay_buttons,
+                                     on_release=self.update_relay_widgets,
                                     )
     self.add_widget(self.update_view_button)
 
@@ -128,7 +132,7 @@ class RelayControlersLayout(StackLayout):
                                      size_hint=(None, None),
                                      width=Window.width,
                                      height=int(Window.height)/12.,
-
+                                     on_release=self.delete_all_schedule,
                                     )
     self.add_widget(self.clear_all_button)
 
@@ -136,7 +140,7 @@ class RelayControlersLayout(StackLayout):
                                      size_hint=(None, None),
                                      width=Window.width,
                                      height=int(Window.height)/12.,
-
+                                     on_release=self.send_schedule_to_host,
                                     )
     self.add_widget(self.send_to_host_button)
 
@@ -147,6 +151,16 @@ class RelayControlersLayout(StackLayout):
     self.remove_widget(self.clear_all_button)
     self.remove_widget(self.send_to_host_button)
 
-  def update_relay_buttons(self, instance):
+  def update_relay_widgets(self, instance):
     self._remove_relay_controler_widgets()
     self._create_relay_controler_widgets()
+
+  def delete_all_schedule(self, instance):
+    self.communicator.delete_all_schedule(widgets.state.relays)
+    widgets.state.relays = self.communicator.get_formatted_relays_data()
+
+    self.update_relay_widgets(None)
+
+  def send_schedule_to_host(self, instance):
+    self.communicator.delete_all_schedule(widgets.state.relays)
+    self.communicator.send_all_schedule_to_host(widgets.state.relays)

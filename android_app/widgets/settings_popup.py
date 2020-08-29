@@ -11,47 +11,13 @@ import requests
 from requests.exceptions import ConnectionError
 
 import widgets.state
+from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 
 def login(instance):
   # TODO: Authentication
-  try:
-    url = f'http://{widgets.state.host}:5000/get_relay_configuration'
-    response = requests.get(url=url, timeout=5)
-    channel_section_name_map = response.json()
 
-    url = f'http://{widgets.state.host}:5000/get_schedule'
-    response = requests.get(url=url, timeout=5)
-    schedules = response.json()
-  except ConnectionError:
-    channel_section_name_map = {}
-    schedules = []
-
-  def format_relays_data(channel_section_name_map: Dict[str, str],
-                         schedules: Dict[str, Dict[str, Any]]
-                        ) -> List[Dict[str, Any]]:
-    '''Function needed to reformat data from the relay_sceduler to the android API'''
-    def create_default_realy(channel: str, section_name: str) -> Dict[str, Any]:
-      return {
-          'channel': int(channel),
-          'section_name': section_name,
-          'start': '19:00',
-          'end': '19:15',
-          'weekdays': []
-          }
-    relays = [create_default_realy(channel, section_name)
-              for channel, section_name in channel_section_name_map.items()]
-
-    if schedules:
-      for schedule in schedules.values():
-        for relay_nr, relay_default in enumerate(relays):
-          if relay_default['channel'] == schedule['channel']:
-            relays[relay_nr]['start'] = schedule['start_time_utc']
-            relays[relay_nr]['end'] = schedule['end_time_utc']
-            relays[relay_nr]['weekdays'].append(schedule['weekday'])
-
-    return relays
-
-  widgets.state.relays = format_relays_data(channel_section_name_map, schedules)
+  communicator = WateringSchedulerCommunicator(widgets.state.host)
+  widgets.state.relays = communicator.get_formatted_relays_data()
 
   # widgets.state.relays = [
   #   {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
