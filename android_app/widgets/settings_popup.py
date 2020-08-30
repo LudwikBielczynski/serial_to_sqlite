@@ -17,6 +17,7 @@ def login(instance):
   # TODO: Authentication
 
   communicator = WateringSchedulerCommunicator(widgets.state.host)
+  communicator.fetch_data_from_host()
   widgets.state.relays = communicator.get_formatted_relays_data()
 
   # widgets.state.relays = [

@@ -157,8 +157,8 @@ class RelayControlersLayout(StackLayout):
 
   def delete_all_schedule(self, instance):
     self.communicator.delete_all_schedule(widgets.state.relays)
-    widgets.state.relays = self.communicator.get_formatted_relays_data()
 
+    widgets.state.relays = self.communicator.get_formatted_relays_data()
     self.update_relay_widgets(None)
 
   def send_schedule_to_host(self, instance):
