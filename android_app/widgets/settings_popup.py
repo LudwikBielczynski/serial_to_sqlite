@@ -36,7 +36,7 @@ class SettingsPopupContent(GridLayout):
     self.add_widget(Label(text='Host'))
     self.host_input = TextInput(text=widgets.state.host, multiline=False)
     def on_host_input(instance, value):
-      widgets.host = value
+      widgets.state.host = value
     self.host_input.bind(text=on_host_input)
     self.add_widget(self.host_input)
 
