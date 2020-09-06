@@ -9,6 +9,11 @@ from widgets.relay_controler import RelayControlersLayout
 from widgets.settings_popup import SettingsPopupLayout
 import widgets.state
 
+# TODO: Implement multi screen layout
+# https://kivy.org/doc/stable/api-kivy.uix.screenmanager.html
+
+# TODO: Implement manual turning on and off
+
 class RootScreen(GridLayout):
 
   def __init__(self, **kwargs):
