@@ -1,3 +1,4 @@
+from json.decoder import JSONDecodeError
 from typing import Any, Dict, List, Optional
 
 import requests
@@ -16,12 +17,11 @@ class WateringSchedulerCommunicator:
         try:
             self.channel_section_name_map = self._get_relay_configuration()
             self.schedules = self._get_schedule()
-        except (ConnectionError, NewConnectionError):
+        except (ConnectionError, NewConnectionError, JSONDecodeError):
             pass
 
     def _get_relay_configuration(self) -> Dict[str, str]:
         url = f'http://{self.host}:5000/get_relay_configuration'
-        print('user', widgets.state.username, 'pass', widgets.state.password)
         response = requests.get(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
@@ -78,7 +78,6 @@ class WateringSchedulerCommunicator:
 
                     try:
                         url = f'http://{self.host}:5000/schedule_watering/{channel}_{start_time_utc}-{end_time_utc}_{weekday}'
-                        print(widgets.state.username, widgets.state.password)
                         response = requests.put(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
                         print(response.text)
                     except ConnectionError:
