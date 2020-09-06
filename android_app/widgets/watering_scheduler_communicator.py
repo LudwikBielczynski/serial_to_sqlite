@@ -4,6 +4,8 @@ import requests
 from requests.exceptions import ConnectionError
 from urllib3.connection import NewConnectionError
 
+import widgets.state
+
 class WateringSchedulerCommunicator:
 
     def __init__(self, host: str):
@@ -19,12 +21,13 @@ class WateringSchedulerCommunicator:
 
     def _get_relay_configuration(self) -> Dict[str, str]:
         url = f'http://{self.host}:5000/get_relay_configuration'
-        response = requests.get(url=url, timeout=5)
+        print('user', widgets.state.username, 'pass', widgets.state.password)
+        response = requests.get(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
     def _get_schedule(self) -> Dict[str, Dict[str, Any]]:
         url = f'http://{self.host}:5000/get_schedule'
-        response = requests.get(url=url, timeout=5)
+        response = requests.get(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
     def get_formatted_relays_data(self):
@@ -54,7 +57,7 @@ class WateringSchedulerCommunicator:
         for relay in relays:
             try:
                 url = f"http://{self.host}:5000/delete_for_channel_watering_schedule/{relay['channel']}"
-                response = requests.put(url=url, timeout=5)
+                response = requests.put(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
                 print(response.text)
             except ConnectionError:
                 pass
@@ -75,7 +78,8 @@ class WateringSchedulerCommunicator:
 
                     try:
                         url = f'http://{self.host}:5000/schedule_watering/{channel}_{start_time_utc}-{end_time_utc}_{weekday}'
-                        response = requests.put(url=url, timeout=5)
+                        print(widgets.state.username, widgets.state.password)
+                        response = requests.put(url=url, timeout=5, auth=(widgets.state.username, widgets.state.password))
                         print(response.text)
                     except ConnectionError:
                         pass

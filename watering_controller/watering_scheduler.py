@@ -1,13 +1,15 @@
 import json
 import sys
 import time
-from typing import Optional
+from typing import Dict, Optional
 import warnings
 
 from flask import Flask, jsonify, make_response
+from flask_httpauth import HTTPBasicAuth
 import pandas as pd
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from common.shares import LOCAL_DATABASES_PATH
+from common.shares import LOCAL_DATABASES_PATH, AUTH_PATH
 
 from repositories.database import WateringSchedule
 from repositories.database.sqlite import DatabaseSqlite
@@ -17,8 +19,18 @@ from watering_controller.relay import load_channel_section_name_map
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
+
+with open(AUTH_PATH, 'r') as json_data:
+    users = json.load(json_data)
 
 DEFAULT_APP_PORT = 5000
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users and \
+            check_password_hash(users.get(username), password):
+        return username
 
 def check_inputs(channel: int,
                  weekday: Optional[int] = None,
@@ -64,6 +76,7 @@ def check_readiness() -> str:
     return jsonify({'status': 'ready'})
 
 @app.route('/get_schedule', methods=['GET'])
+@auth.login_required
 def get_schedule_route():
     '''
     This method is used to get the full watering scheduls
@@ -80,6 +93,7 @@ def get_schedule_route():
     return jsonify(schedule.T.to_dict())
 
 @app.route('/get_relay_configuration', methods=['GET'])
+@auth.login_required
 def get_relay_configuration_route():
     '''
     This method is used to get relay configuration
@@ -90,6 +104,7 @@ def get_relay_configuration_route():
     return jsonify(load_channel_section_name_map())
 
 @app.route('/schedule_watering/<int:channel>_<start_time_utc>-<end_time_utc>_<int:weekday>', methods=['PUT'])
+@auth.login_required
 def schedule_watering_route(channel: int,
                             start_time_utc: str,
                             end_time_utc: str,
@@ -129,6 +144,7 @@ def schedule_watering_route(channel: int,
     return jsonify({'status': 'data added to local database'})
 
 @app.route('/delete_for_channel_weekday_watering_schedule/<int:channel>_<int:weekday>', methods=['PUT'])
+@auth.login_required
 def delete_for_channel_weekday_watering_schedule_route(channel: int, weekday: int):
     '''
     This method is used to clear watering schedule for a selected weekday channel combination.
@@ -147,6 +163,7 @@ def delete_for_channel_weekday_watering_schedule_route(channel: int, weekday: in
     return jsonify({'status': f'data for channel {channel} and weekday {weekday} was deleted'})
 
 @app.route('/delete_for_channel_watering_schedule/<int:channel>', methods=['PUT'])
+@auth.login_required
 def delete_for_channel_watering_schedule_route(channel: int):
     '''
     This method is used to clear watering schedule for a selected weekday channel combination.

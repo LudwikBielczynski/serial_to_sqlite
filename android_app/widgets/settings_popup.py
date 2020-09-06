@@ -43,14 +43,14 @@ class SettingsPopupContent(GridLayout):
     self.add_widget(Label(text='User Name'))
     self.username_input = TextInput(text=widgets.state.username, multiline=False)
     def on_username_input(instance, value):
-      widgets.username = value
+      widgets.state.username = value
     self.username_input.bind(text=on_username_input)
     self.add_widget(self.username_input)
 
     self.add_widget(Label(text='Password'))
     self.password_input = TextInput(text=widgets.state.password, password=True, multiline=False)
     def on_password_input(instance, value):
-      widgets.password = value
+      widgets.state.password = value
     self.password_input.bind(text=on_password_input)
     self.add_widget(self.password_input)
 

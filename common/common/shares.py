@@ -2,6 +2,7 @@ from pathlib import Path
 
 LOCAL_DATABASES_PATH = Path('/usr/local/sqlite')
 RELAYS_CONFIG_PATH = Path('/usr/local/relay/config.json')
+AUTH_PATH = Path('/usr/local/relay/auth.json')
 
 RELAY_CHANNEL_PIN_BCM_MAP = {
     1: 5,
