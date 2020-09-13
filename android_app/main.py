@@ -9,6 +9,10 @@ from widgets.relay_controler import RelayControlersLayout
 from widgets.settings_popup import SettingsPopupLayout
 import widgets.state
 
+# TODO: Save tz info?
+# time.strftime('%z')
+# datetime.strptime('20:00+0200', '%H:%M%z')
+
 # TODO: Implement multi screen layout
 # https://kivy.org/doc/stable/api-kivy.uix.screenmanager.html
 

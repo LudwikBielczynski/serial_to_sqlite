@@ -30,3 +30,6 @@ sudo systemctl enable watering_starter.service
 
 sudo systemctl start watering_scheduler.service
 sudo systemctl start watering_starter.service
+
+sudo systemctl restart watering_scheduler.service
+sudo systemctl restart watering_starter.service
