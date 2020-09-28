@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/ludwik/.pyenv/versions/serial/bin/python",
+    "python.pythonPath": "/home/ludwik/.pyenv/versions/watering_system/bin/python",
     "python.analysis.disabled": [
         "unresolved-import"
     ]

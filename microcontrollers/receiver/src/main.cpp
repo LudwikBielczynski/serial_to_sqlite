@@ -23,16 +23,16 @@ void setup() {
 
   isSetupSuccess = radio.begin();
   // Serial.print("Receiver initialization status: ");
-  // Serial.println(isSetupSuccess);
-  // radio.printDetails();
-  // Serial.println();
+  Serial.println(isSetupSuccess);
+  // radio.printDetails();v
+  Serial.println();
 
   if (isSetupSuccess) {
     // Set the pipe on the selected address address
     radio.openReadingPipe(1, SLAVE_ADDRESS);
     radio.setDataRate(RF24_250KBPS);
     radio.setPALevel(RF24_PA_MIN);
-    // radio.printDetails();
+    radio.printDetails();
 
     // Set module as a receiver
     radio.startListening();
