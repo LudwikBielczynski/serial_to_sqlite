@@ -10,7 +10,7 @@
 #define CE_PIN 8
 #define CSN_PIN 9
 
-const byte SLAVE_ADDRESS[5] = {'R','x','0','0','1'};
+const uint64_t SLAVE_ADDRESS = 0xE6E6E6E6E6E6;
 
 RF24 radio(CE_PIN, CSN_PIN);
 
