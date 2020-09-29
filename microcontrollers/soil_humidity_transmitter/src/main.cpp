@@ -3,6 +3,7 @@
 // based on https://forum.arduino.cc/index.php?topic=421081
 
 #include "Transmitter.h"
+#include "SoilHumiditySensor.h"
 #include <printf.h>
 #include <avr/sleep.h>
 #include <avr/power.h>
@@ -13,7 +14,7 @@ const uint8_t SOIL_HUMIDITY_POWER_PIN = 5;
 const uint8_t CE_PIN = 8;
 const uint8_t CSN_PIN = 9;
 const uint8_t SCK_PIN = 13; // default SCK pin
-const uint8_t SENSOR_PIN = 14; // A0
+const uint8_t SOIL_HUMIDITY_SENSOR_PIN = 14; // A0
 const uint8_t VOLTAGE_SPLITTER_PIN = 16; // A2
 
 // Transmitter settings
@@ -42,16 +43,15 @@ int voltagesSum = 0;
 float voltage;
 
 Transmitter transmitter(CE_PIN, CSN_PIN, SCK_PIN, RADIO_POWER_PIN, SLAVE_ADDRESS);
+SoilHumiditySensor soil_humidity_sensor(SOIL_HUMIDITY_POWER_PIN, SOIL_HUMIDITY_SENSOR_PIN);
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Powered up the microprocessor...");
 
-  // Transmitter transmitter(CE_PIN, CSN_PIN);
-
   analogReference(EXTERNAL);
   analogRead(VOLTAGE_SPLITTER_PIN); // First read after switching to external reference are not reliable
-  analogRead(SENSOR_PIN);
+  analogRead(SOIL_HUMIDITY_SENSOR_PIN);
 
   printf_begin();
   pinMode(RADIO_POWER_PIN, OUTPUT);
@@ -73,18 +73,6 @@ float measureBatteryVoltage() {
   float voltage = VOLTAGE_SPLIT_FACTOR * REFERENCE_VOLTAGE * voltagesSum / (1024.0 * VOLTAGE_MEASUREMENTS_NR) + VOLTAGE_CORRECTION;
   // Serial.println(voltage);
   return voltage;
-}
-
-/****************************************************************************/
-
-uint8_t measureSoilHumidity() {
-    digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
-    delay(100);
-    soilHumiditySensorValue = analogRead(SENSOR_PIN);
-    // Serial.println(soilHumiditySensorValue);
-    digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW); // Power sensor down
-
-    return soilHumiditySensorValue;
 }
 
 /****************************************************************************/
@@ -123,7 +111,7 @@ void loop() {
       char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
       // // Measure soil moisture
-      soilHumiditySensorValue = measureSoilHumidity();
+      soilHumiditySensorValue = soil_humidity_sensor.measure();
 
       // Send data to the receiver
       transmitter.turnOn();
