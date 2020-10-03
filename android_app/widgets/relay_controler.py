@@ -147,7 +147,7 @@ class RelayControlersLayout(StackLayout):
         self.remove_widget(self.send_to_host_button)
         self.remove_widget(self.logout_button)
 
-    def update_relay_widgets(self, instance):
+    def update_relay_widgets(self, *args):
         self._remove_relay_controler_widgets()
         self._create_relay_controler_widgets()
 

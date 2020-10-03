@@ -18,79 +18,8 @@ import widgets.state
 # https://kivy.org/doc/stable/api-kivy.uix.screenmanager.html
 
 # TODO: Implement manual turning on and off
-
-Builder.load_string("""
-#:import login widgets.login.login
-#:import state widgets.state
-<LoginScreen>:
-
-    RelativeLayout:
-        size_hint: None, None
-        size: root.width, root.height / 4
-        pos: 0, root.height / 2 - root.height / (4 * 2)
-        BoxLayout:
-            orientation: 'vertical'
-
-            Label:
-                text: 'Watering system'
-
-            BoxLayout:
-                orientation: 'horizontal'
-
-                Label:
-                    text: 'Host'
-
-                TextInput:
-                    id: host_name
-                    text: state.host
-                    multiline: False
-                    on_text:
-                        app.set_state_host()
-
-            BoxLayout:
-                orientation: 'horizontal'
-
-                Label:
-                    text: 'Username'
-
-                TextInput:
-                    id: username
-                    text: state.username
-                    multiline: False
-                    on_text:
-                        app.set_state_username()
-
-            BoxLayout:
-                orientation: 'horizontal'
-
-                Label:
-                    text: 'Password'
-
-                TextInput:
-                    id: password
-                    text: state.password
-                    password: True
-                    multiline: False
-                    on_text:
-                        app.set_state_password()
-
-            BoxLayout:
-                orientation: 'horizontal'
-
-                Label:
-                    text: ''
-
-                Button:
-                    text: 'Login'
-                    on_press:
-                        login()
-
-#:import RelayControlersLayout widgets.relay_controler.RelayControlersLayout
-<ControlScreen>:
-    RelayControlersLayout
-     
-""")
-
+Builder.load_file('screen/login.kv')
+Builder.load_file('screen/control.kv')
 
 # Declare both screens
 class LoginScreen(Screen):
