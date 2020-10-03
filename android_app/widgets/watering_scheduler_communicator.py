@@ -13,6 +13,7 @@ class WateringSchedulerCommunicator:
         self.host = host
         self.channel_section_name_map = {} # type: Dict[str, str]
         self.schedules = {} # type: Dict[str, Dict[str, Any]]
+        
     def fetch_data_from_host(self):
         try:
             self.channel_section_name_map = self._get_relay_configuration()
