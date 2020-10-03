@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
@@ -15,18 +16,10 @@ import widgets.state
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 from widgets.weedays_popup import WeekdaysPopupLayout
 
-class TopLabels(BoxLayout):
+Builder.load_file('widgets/top_labels.kv')
 
-    def __init__(self, **kwargs):
-        super(TopLabels, self).__init__(**kwargs)
-        self.orientation = 'horizontal'
-        self.cols = 5
-        self.height = 0.1
-        self.add_widget(Label(text='Section'))
-        self.add_widget(Label(text='Start'))
-        self.add_widget(Label(text='End'))
-        self.add_widget(Label(text='Weekday'))
-        self.add_widget(Label(text='Manual'))
+class TopLabels(BoxLayout):
+    pass
 
 class WeekdaysButton(Button):
 
@@ -105,7 +98,6 @@ class RelayControlersLayout(StackLayout):
 
     def __init__(self, **kwargs):
         super(RelayControlersLayout, self).__init__(**kwargs)
-        self.add_widget(TopLabels(size_hint=(1, 0.06), spacing=(0, 0),))
         self.relays_control_widgets = []
 
         self._create_relay_controler_widgets()
@@ -113,18 +105,10 @@ class RelayControlersLayout(StackLayout):
         self.communicator = WateringSchedulerCommunicator(widgets.state.host)
 
     def _create_relay_controler_widgets(self):
-        for relay in widgets.state.relays:
-            relay_controler_widget = RelayControlerWidget(relay,
-                                                          size_hint=(1, 0.06),
-                                                          spacing=(0, 0),
-                                                        )
-            self.relays_control_widgets.append(relay_controler_widget)
-            self.add_widget(relay_controler_widget)
-
         button_settings = {
             'size_hint': (None, None),
             'width': Window.width,
-            'height': int(Window.height)/12.,
+            'height': int(Window.height)/15.,
         }
 
         self.update_view_button = Button(text='Update view', on_release=self.update_relay_widgets, **button_settings)
@@ -138,10 +122,21 @@ class RelayControlersLayout(StackLayout):
 
         self.logout_button = Button(text='Log out', on_release=self.logout, **button_settings)
         self.add_widget(self.logout_button)
+        
+        self.top_labels = TopLabels(size_hint=(1, 0.06), spacing=(0, 0),)
+        self.add_widget(self.top_labels)
+        for relay in widgets.state.relays:
+            relay_controler_widget = RelayControlerWidget(relay,
+                                                          size_hint=(1, 0.06),
+                                                          spacing=(0, 0),
+                                                        )
+            self.relays_control_widgets.append(relay_controler_widget)
+            self.add_widget(relay_controler_widget)
 
     def _remove_relay_controler_widgets(self):
         for relay_controler_widget in self.relays_control_widgets:
             self.remove_widget(relay_controler_widget)
+        self.remove_widget(self.top_labels)
         self.remove_widget(self.update_view_button)
         self.remove_widget(self.clear_all_button)
         self.remove_widget(self.send_to_host_button)
