@@ -17,13 +17,6 @@ const uint8_t SOIL_HUMIDITY_SENSOR_PIN = 14; // A0
 const uint8_t VOLTAGE_SPLITTER_PIN = 16; // A2
 
 const uint64_t SLAVE_ADDRESS = 0xE6E6E6E6E6E6;
-const unsigned long TRANSMITTER_SEND_INTERVAL_MS = 1000; // Once per 5sec
-// const unsigned long long TRANSMITTER_SEND_INTERVAL_MS = 1800000; // Once per 30min
-
-bool shouldStartWithMeasurement = true;
-unsigned long long previousTimeMs;
-unsigned long long currentTimeMs;
-bool isLargerThanInterval = false;
 
 // Soil humidity settings
 const unsigned short int SOIL_MOISTURE_MEASUREMENTS_NR = 1;
@@ -57,30 +50,22 @@ void setup() {
 /****************************************************************************/
 
 void loop() {
-  currentTimeMs = millis();
-  isLargerThanInterval = currentTimeMs - previousTimeMs >= TRANSMITTER_SEND_INTERVAL_MS;
-  if (isLargerThanInterval | shouldStartWithMeasurement) {
-    // Repeat few times the measurement to get the precision and sleep afterwards
-    for (size_t i = 0; i < SOIL_MOISTURE_MEASUREMENTS_NR; i++)
-    {
-      // Read battery voltage before other components are powered up
-      voltage = microcontroller.measureBatteryVoltage(VOLTAGE_MEASUREMENTS_NR);
 
-      char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
+  // Read battery voltage before other components are powered up
+  voltage = microcontroller.measureBatteryVoltage(VOLTAGE_MEASUREMENTS_NR);
 
-      // // Measure soil moisture
-      soilHumiditySensorValue = soil_humidity_sensor.measure();
+  char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
-      // Send data to the receiver
-      transmitter.turnOn();
-      transmitter.setUp();
-      transmitter.prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
-      transmitter.sendData(dataToSend, dataToSendSize);
-      transmitter.turnOff();
-    }
-    microcontroller.sleep();
+  // // Measure soil moisture
+  soilHumiditySensorValue = soil_humidity_sensor.measure();
 
-    shouldStartWithMeasurement = false;
-    previousTimeMs = millis();
-  }
+  // Send data to the receiver
+  transmitter.turnOn();
+  transmitter.setUp();
+  transmitter.prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
+  transmitter.sendData(dataToSend, dataToSendSize);
+  transmitter.turnOff();
+
+  microcontroller.sleep();
+
 }

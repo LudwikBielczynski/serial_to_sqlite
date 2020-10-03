@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
@@ -7,7 +8,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 
 from widgets.weedays_popup import WeekdaysPopupLayout
 from widgets.relay_controler import RelayControlersLayout
-from widgets.settings import SettingsContent
 import widgets.state
 
 # TODO: Save tz info?
@@ -19,46 +19,75 @@ import widgets.state
 
 # TODO: Implement manual turning on and off
 
-from kivy.app import App
-from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-# Create both screens. Please note the root.manager.current: this is how
-# you can control the ScreenManager from kv. Each screen has by default a
-# property manager that gives you the instance of the ScreenManager used.
-        # SettingsContent
-        #     size: root.width * 0.8, root.height * 0.8
-        #     row_force_default: True
-        #     row_default_height: 50
-        #     center: root.width / 2, root.height / 2
-                    
-        #     Button:
-        #         text: 'Log in'
-        #         on_press:
-        #             login()
-    # AnchorLayout:
-    #     anchor_x: 'center'
-    #     anchor_y: 'center'
 Builder.load_string("""
-#:import SettingsContent widgets.settings.SettingsContent
-#:import login widgets.settings.login
+#:import login widgets.login.login
+#:import state widgets.state
 <LoginScreen>:
 
     RelativeLayout:
         size_hint: None, None
-        size: root.width, root.height / 5
-        pos: 0, root.height / 2 - root.height / (5 * 2)
+        size: root.width, root.height / 4
+        pos: 0, root.height / 2 - root.height / (4 * 2)
         BoxLayout:
             orientation: 'vertical'
-            nrows: 2
 
-            Button:
-                text: 'Log in'
-            Button:
-                text: 'Log in2'
+            Label:
+                text: 'Watering system'
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    text: 'Host'
+
+                TextInput:
+                    id: host_name
+                    text: state.host
+                    multiline: False
+                    on_text:
+                        app.set_state_host()
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    text: 'Username'
+
+                TextInput:
+                    id: username
+                    text: state.username
+                    multiline: False
+                    on_text:
+                        app.set_state_username()
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    text: 'Password'
+
+                TextInput:
+                    id: password
+                    text: state.password
+                    password: True
+                    multiline: False
+                    on_text:
+                        app.set_state_password()
+
+            BoxLayout:
+                orientation: 'horizontal'
+
+                Label:
+                    text: ''
+
+                Button:
+                    text: 'Login'
+                    on_press:
+                        login()
 
 <ControlScreen>:
     GridLayout:
-        nrows: 1
+        nrows: 2
         Button:
             text: 'Log out'
             on_press:
@@ -83,5 +112,14 @@ class WateringControlSystemApp(App):
     def build(self):
         # root = RootScreen()
         return sm
+
+    def set_state_host(self):
+        widgets.state.host = self.root.current_screen.ids.host_name.text
+
+    def set_state_username(self):
+        widgets.state.username = self.root.current_screen.ids.username.text
+
+    def set_state_password(self):
+        widgets.state.password = self.root.current_screen.ids.password.text
 
 WateringControlSystemApp().run()

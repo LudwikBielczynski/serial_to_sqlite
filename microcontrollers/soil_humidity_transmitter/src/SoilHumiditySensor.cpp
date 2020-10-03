@@ -14,14 +14,15 @@ void SoilHumiditySensor::turnOff() {
 }
 
 uint8_t SoilHumiditySensor::measure() {
-    // functions used to return the value of the soil humidity from the sensor
-    SoilHumiditySensor::turnOn();
+  // functions used to return the value of the soil humidity from the sensor
+  SoilHumiditySensor::turnOn();
 
-    int soilHumiditySensorValue;
-    soilHumiditySensorValue = analogRead(sensor_pin);
-    // Serial.println(soilHumiditySensorValue);
+  // TODO: Implement several averaged reads
+  int soilHumiditySensorValue;
+  soilHumiditySensorValue = analogRead(sensor_pin);
+  // Serial.println(soilHumiditySensorValue);
 
-    SoilHumiditySensor::turnOff();
+  SoilHumiditySensor::turnOff();
 
-    return soilHumiditySensorValue;
+  return soilHumiditySensorValue;
 }
