@@ -123,7 +123,7 @@ class RelayControlersLayout(StackLayout):
         self.logout_button = Button(text='Log out', on_release=self.logout, **button_settings)
         self.add_widget(self.logout_button)
         
-        self.top_labels = TopLabels(size_hint=(1, 0.06), spacing=(0, 0),)
+        self.top_labels = TopLabels()
         self.add_widget(self.top_labels)
         for relay in widgets.state.relays:
             relay_controler_widget = RelayControlerWidget(relay,
