@@ -162,6 +162,10 @@ class RelayControlersLayout(StackLayout):
         self.communicator.send_all_schedule_to_host(widgets.state.relays)
 
     def logout(self, instance):
+        widgets.state.relays = []
+        widgets.state.username = ''
+        widgets.state.password = ''
+        
         manager = App.get_running_app().root
         manager.transition.direction = 'right'
         manager.current = 'login'
