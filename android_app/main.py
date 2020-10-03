@@ -85,15 +85,12 @@ Builder.load_string("""
                     on_press:
                         login()
 
+#:import RelayControlersLayout widgets.relay_controler.RelayControlersLayout
 <ControlScreen>:
-    GridLayout:
-        nrows: 2
-        Button:
-            text: 'Log out'
-            on_press:
-                root.manager.transition.direction = 'right'
-                root.manager.current = 'login'
+    RelayControlersLayout
+     
 """)
+
 
 # Declare both screens
 class LoginScreen(Screen):
