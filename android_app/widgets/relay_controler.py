@@ -68,7 +68,7 @@ class RelayControlerWidget(GridLayout):
                                     multiline=False,
                                     halign='center',
                                     on_text_validate=_time_start_on_enter,
-                                )
+                                   )
 
         def _time_end_on_enter(instance):
             is_valid = validate_time_input(instance.text)
@@ -78,10 +78,10 @@ class RelayControlerWidget(GridLayout):
                         widgets.state.relays[relay_nr]['end'] = instance.text
 
         self.time_end = TextInput(text=self.relay['end'],
-                                multiline=False,
-                                halign='center',
-                                on_text_validate=_time_end_on_enter,
-                                )
+                                  multiline=False,
+                                  halign='center',
+                                  on_text_validate=_time_end_on_enter,
+                                 )
         self.weekdays_layout = WeekdaysPopupLayout(self.relay['channel'], self.relay['weekdays'])
         self.weekday_button = WeekdaysButton(self.relay,
                                             on_release=self.weekdays_layout.popup.open,
@@ -110,21 +110,9 @@ class RelayControlersLayout(StackLayout):
             'width': Window.width,
             'height': int(Window.height)/15.,
         }
-
-        self.update_view_button = Button(text='Update view', on_release=self.update_relay_widgets, **button_settings)
-        self.add_widget(self.update_view_button)
-
-        self.clear_all_button = Button(text='Clear all', on_release=self.delete_all_schedule, **button_settings)
-        self.add_widget(self.clear_all_button)
-
-        self.send_to_host_button = Button(text='Send to host', on_release=self.send_schedule_to_host, **button_settings)
-        self.add_widget(self.send_to_host_button)
-
-        self.logout_button = Button(text='Log out', on_release=self.logout, **button_settings)
-        self.add_widget(self.logout_button)
-        
         self.top_labels = TopLabels()
         self.add_widget(self.top_labels)
+
         for relay in widgets.state.relays:
             relay_controler_widget = RelayControlerWidget(relay,
                                                           size_hint=(1, 0.06),
@@ -137,30 +125,17 @@ class RelayControlersLayout(StackLayout):
         for relay_controler_widget in self.relays_control_widgets:
             self.remove_widget(relay_controler_widget)
         self.remove_widget(self.top_labels)
-        self.remove_widget(self.update_view_button)
-        self.remove_widget(self.clear_all_button)
-        self.remove_widget(self.send_to_host_button)
-        self.remove_widget(self.logout_button)
 
     def update_relay_widgets(self, *args):
         self._remove_relay_controler_widgets()
         self._create_relay_controler_widgets()
 
-    def delete_all_schedule(self, instance):
+    def delete_all_schedule(self, *args):
         self.communicator.delete_all_schedule(widgets.state.relays)
 
         widgets.state.relays = self.communicator.get_formatted_relays_data()
         self.update_relay_widgets(None)
 
-    def send_schedule_to_host(self, instance):
+    def send_schedule_to_host(self, *args):
         self.communicator.delete_all_schedule(widgets.state.relays)
         self.communicator.send_all_schedule_to_host(widgets.state.relays)
-
-    def logout(self, instance):
-        widgets.state.relays = []
-        widgets.state.username = ''
-        widgets.state.password = ''
-        
-        manager = App.get_running_app().root
-        manager.transition.direction = 'right'
-        manager.current = 'login'
