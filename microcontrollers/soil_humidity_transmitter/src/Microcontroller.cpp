@@ -15,23 +15,24 @@ float Microcontroller::measureBatteryVoltage(unsigned short int averaged_measure
 }
 
 /****************************************************************************/
+const unsigned long SLEEP_INTERVAL_MS = 1;
 
 void Microcontroller::sleep() {
-  // TODO: implement real sleep mode
   Serial.println("Starting to sleep");
+  delay(1000);
+
+  sleep_enable();
+  set_sleep_mode(SLEEP_MODE_PWR_SAVE); // Power-save mode disables BOD p.34
+
+  // CLKPR = 0x02;
+  clock_prescale_set(clock_div_128);
+  // sleep_cpu();
+
+  delay(100);
+  clock_prescale_set(clock_div_1);
+  power_all_enable();
+  sleep_disable();
+  Serial.println("Woke up");
 
   delay(1000);
-  // digitalWrite(SCK_PIN, LOW);
-
-  // set_sleep_mode(SLEEP_MODE_PWR_SAVE);
-  // set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  // sleep_enable();
-  // sleep_mode();
-  // clock_prescale_set(clock_div_4);
-  // // CLKPR = 0x02;
-  // delay(3000);
-  // clock_prescale_set(clock_div_1);
-  // power_all_enable();
-  // sleep_disable();
-  Serial.println("Woke up");
 }
