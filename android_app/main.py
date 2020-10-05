@@ -18,18 +18,21 @@ import widgets.state
 # https://kivy.org/doc/stable/api-kivy.uix.screenmanager.html
 
 # TODO: Implement manual turning on and off
-Builder.load_file('screen/login.kv')
-Builder.load_file('screen/control.kv')
 
 # Declare both screens
+Builder.load_file('screen/login.kv')
 class LoginScreen(Screen):
     pass
 
+Builder.load_file('screen/control.kv')
 class ControlScreen(Screen):
     pass
 
+Builder.load_file('screen/relay_settings.kv')
+class RelaySettingsScreen(Screen):
+    pass
+
 # Create the screen manager
-# FIXME: Add strong references to kv files
 class WateringControlSystemScreenManager(ScreenManager):
 
     def __init__(self, **kwargs):
@@ -37,6 +40,7 @@ class WateringControlSystemScreenManager(ScreenManager):
 
         self.login_screen = self.add_widget(LoginScreen(name='login'))
         self.control_screen = self.add_widget(ControlScreen(name='control'))
+        self.relay_settings = self.add_widget(RelaySettingsScreen(name='relay_settings'))
 
 class WateringControlSystemApp(App):
 

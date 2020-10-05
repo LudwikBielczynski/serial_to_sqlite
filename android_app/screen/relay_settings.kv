@@ -1,0 +1,16 @@
+#:import to_control transition.control.to_control
+
+<RelaySettingsScreen@Screen>:
+    action_bar_relay_settings: action_bar_relay_settings.__self__
+
+    ActionBar:
+        id: action_bar_relay_settings
+        ActionView:
+            use_seperator: True
+            ActionPrevious:
+                title: 'Watering relays control'
+                with_previous: True
+
+            ActionButton:
+                text: 'Save'
+                on_press: to_control()

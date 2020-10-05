@@ -1,16 +1,23 @@
-<TopLabels>
+<TopLabels@BoxLayout>
     orientation: 'horizontal'
-    cols: 5
+    cols: 4
     height: 0.1
     size_hint: (1, 0.06)
     spacing: (0, 0)
+
+    section_label: section_label.__self__
+    start_label: start_label.__self__
+    end_label: end_label.__self__
+    weekday_label: weekday_label.__self__
     Label:
+        id: section_label
         text: 'Section'
     Label:
+        id: start_label
         text: 'Start'
     Label:
+        id: end_label
         text: 'End'
     Label:
+        id: weekday_label
         text: 'Weekday'
-    Label:
-        text: 'Manual'

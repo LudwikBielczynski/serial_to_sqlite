@@ -1,0 +1,16 @@
+#:import to_relay_settings transition.relay_settings.to_relay_settings
+
+<RelayControllerButton@Button>
+    on_press:
+        to_relay_settings(self)
+
+    orientation: 'horizontal'
+    background_color: .4, .4, .4, .85
+    Label:
+        text: self.parent.label
+    Label:
+        text: self.parent.relay['start']
+    Label:
+        text: self.parent.relay['end']
+    Label:
+        text: self.parent.weekdays
