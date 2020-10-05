@@ -7,6 +7,6 @@ def logout():
     widgets.state.username = ''
     widgets.state.password = ''
 
-    manager = App.get_running_app().root
-    manager.transition.direction = 'right'
-    manager.current = 'login'
+    app = App.get_running_app()
+    app.screen_manager.transition.direction = 'right'
+    app.screen_manager.current = 'login'

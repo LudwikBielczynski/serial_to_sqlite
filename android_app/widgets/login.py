@@ -34,9 +34,8 @@ def login():
         ]
 
     if widgets.state.relays:
-        manager = App.get_running_app().root
-        manager.transition.direction = 'left'
-        manager.current = 'control'
+        app = App.get_running_app()
+        app.screen_manager.transition.direction = 'left'
+        app.screen_manager.current = 'control'
     else:
         print('Did not log in as no data was fetched')
- 

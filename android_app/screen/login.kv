@@ -2,6 +2,10 @@
 #:import state widgets.state
 
 <LoginScreen>:
+    host_name: host_name.__self__
+    username: username.__self__
+    password: password.__self__
+    login_action_bar: login_action_bar.__self__
 
     RelativeLayout:
         size_hint: None, None
@@ -63,6 +67,7 @@
 
     ActionBar:
         id: login_action_bar
+
         ActionView:
             use_seperator: True
             ActionPrevious:

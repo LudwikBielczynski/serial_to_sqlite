@@ -29,15 +29,20 @@ class ControlScreen(Screen):
     pass
 
 # Create the screen manager
-sm = ScreenManager()
-sm.add_widget(LoginScreen(name='login'))
-sm.add_widget(ControlScreen(name='control'))
+# FIXME: Add strong references to kv files
+class WateringControlSystemScreenManager(ScreenManager):
+
+    def __init__(self, **kwargs):
+        super(WateringControlSystemScreenManager, self).__init__(**kwargs)
+
+        self.login_screen = self.add_widget(LoginScreen(name='login'))
+        self.control_screen = self.add_widget(ControlScreen(name='control'))
 
 class WateringControlSystemApp(App):
 
     def build(self):
-        # root = RootScreen()
-        return sm
+        self.screen_manager = WateringControlSystemScreenManager()
+        return self.screen_manager
 
     def set_state_host(self):
         widgets.state.host = self.root.current_screen.ids.host_name.text
@@ -48,4 +53,6 @@ class WateringControlSystemApp(App):
     def set_state_password(self):
         widgets.state.password = self.root.current_screen.ids.password.text
 
-WateringControlSystemApp().run()
+if __name__ == '__main__':
+    app = WateringControlSystemApp()
+    app.run()

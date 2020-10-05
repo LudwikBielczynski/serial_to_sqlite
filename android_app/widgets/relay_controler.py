@@ -13,6 +13,7 @@ from kivy.uix.textinput import TextInput
 import requests
 
 import widgets.state
+from widgets.info_bubble import print_on_info_bubble
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 from widgets.weedays_popup import WeekdaysPopupLayout
 
@@ -113,18 +114,17 @@ class RelayControlersLayout(StackLayout):
         self.top_labels = TopLabels()
         self.add_widget(self.top_labels)
 
-        for relay in widgets.state.relays:
-            relay_controler_widget = RelayControlerWidget(relay,
-                                                          size_hint=(1, 0.06),
-                                                          spacing=(0, 0),
-                                                        )
-            self.relays_control_widgets.append(relay_controler_widget)
-            self.add_widget(relay_controler_widget)
+        self.relays_control_widgets = [RelayControlerWidget(relay,
+                                                            size_hint=(1, 0.06),
+                                                            spacing=(0, 0),
+                                                           )
+                                       for relay in widgets.state.relays
+                                      ]
+        for relays_control_widget in self.relays_control_widgets:
+            self.add_widget(relays_control_widget)
 
     def _remove_relay_controler_widgets(self):
-        for relay_controler_widget in self.relays_control_widgets:
-            self.remove_widget(relay_controler_widget)
-        self.remove_widget(self.top_labels)
+        self.clear_widgets()
 
     def update_relay_widgets(self, *args):
         self._remove_relay_controler_widgets()
