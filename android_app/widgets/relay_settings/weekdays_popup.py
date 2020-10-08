@@ -13,16 +13,15 @@ from widgets.share import WEEKDAYS_MAPPING
 
 class WeekdaySwitch(Switch):
 
-    def __init__(self, relay_nr: int, weekday: str, **kwargs):
+    def __init__(self, weekday: str, **kwargs):
         super(WeekdaySwitch, self).__init__(**kwargs)
-        self.relay_nr = relay_nr
         self.weekday = weekday
 
 def update_relays_state(instance, value):
 
     relay_to_modify = [relay
                       for relay in widgets.state.relays
-                      if relay['channel'] == instance.relay_nr
+                      if relay['channel'] == widgets.state.relay['channel']
                       ][0]
 
     if value:
@@ -32,12 +31,12 @@ def update_relays_state(instance, value):
     relay_to_modify['weekdays'].sort()
 
     for idx, relay in enumerate(widgets.state.relays):
-        if relay['channel'] == instance.relay_nr:
+        if relay['channel'] == widgets.state.relay['channel']:
             widgets.state.relays[idx] = relay_to_modify
 
 class WeekdaysPopupContent(GridLayout):
 
-    def __init__(self, relay_nr: int, weekdays: List[int], **kwargs):
+    def __init__(self, **kwargs):
         super(WeekdaysPopupContent, self).__init__(**kwargs)
         self.columns = 2
         self.rows = 7
@@ -47,12 +46,12 @@ class WeekdaysPopupContent(GridLayout):
         for weekday in WEEKDAYS_MAPPING.keys():
             self.add_widget(Label(text=weekday))
 
-            if WEEKDAYS_MAPPING[weekday] in weekdays:
+            if WEEKDAYS_MAPPING[weekday] in widgets.state.relay['weekdays']:
                 active = True
             else:
                 active = False
 
-            weekday_switch = WeekdaySwitch(relay_nr, weekday, active=active)
+            weekday_switch = WeekdaySwitch(weekday, active=active)
             weekday_switch.bind(active=update_relays_state)
 
             self.weekday_switches[weekday] = weekday_switch
@@ -60,19 +59,10 @@ class WeekdaysPopupContent(GridLayout):
 
 class WeekdaysPopupLayout(AnchorLayout):
 
-    def __init__(self,
-                #  relay_nr: int,
-                 weekdays: str,
-                 **kwargs
-                ):
+    def __init__(self, **kwargs):
         super(WeekdaysPopupLayout, self).__init__(anchor_x='right', anchor_y='bottom', **kwargs)
-        try:
-            weekdays_list = json.loads(weekdays)
-        except:
-            weekdays_list = []
-        relay_nr = 0
 
-        weekdays_popup_content = WeekdaysPopupContent(relay_nr, weekdays_list)
+        weekdays_popup_content = WeekdaysPopupContent()
         self.popup = Popup(title='Select weekdays',
                            content=weekdays_popup_content,
                            size_hint=(None, None),

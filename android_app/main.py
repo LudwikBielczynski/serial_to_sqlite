@@ -2,8 +2,8 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-# from widgets.weedays_popup import WeekdaysPopupLayout
 import widgets.state
+from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 
 # TODO: Save tz info?
 # time.strftime('%z')
@@ -19,13 +19,19 @@ Builder.load_file('screen/login.kv')
 class LoginScreen(Screen):
     pass
 
-Builder.load_file('screen/control.kv')
-class ControlScreen(Screen):
-    pass
+Builder.load_file('screen/relay_controller.kv')
+class RelayControllerScreen(Screen):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        print('initialized')
 
 Builder.load_file('screen/relay_settings.kv')
 class RelaySettingsScreen(Screen):
-    pass
+
+    def open_weekday_popup(self):
+        popup_layout = WeekdaysPopupLayout()
+        popup_layout.popup.open()
 
 # Create the screen manager
 class WateringControlSystemScreenManager(ScreenManager):
@@ -34,7 +40,7 @@ class WateringControlSystemScreenManager(ScreenManager):
         super(WateringControlSystemScreenManager, self).__init__(**kwargs)
 
         self.login_screen = self.add_widget(LoginScreen(name='login'))
-        self.control_screen = self.add_widget(ControlScreen(name='control'))
+        self.control_screen = self.add_widget(RelayControllerScreen(name='relay_controller'))
         self.relay_settings = self.add_widget(RelaySettingsScreen(name='relay_settings'))
 
 class WateringControlSystemApp(App):

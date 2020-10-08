@@ -1,0 +1,33 @@
+#:import RelayControlersLayout widgets.relay_controller.relay_controller.RelayControllersLayout
+#:import logout widgets.relay_controller.logout.logout
+
+<RelayControllerScreen@Screen>:
+    action_bar: action_bar.__self__
+    relay_controller_layout: relay_controller_layout.__self__
+
+    on_enter:
+        root.ids.relay_controller_layout.update_relay_widgets()
+
+    ActionBar:
+        id: action_bar
+        ActionView:
+            use_seperator: True
+            ActionPrevious:
+                title: 'Watering relays control'
+                with_previous: False
+
+            ActionOverflow:
+                ActionButton:
+                    text: 'Clear'
+                    on_press: relay_controller_layout.delete_all_schedule()
+
+                ActionButton:
+                    text: 'Send to Host'
+                    on_press: relay_controller_layout.send_schedule_to_host()
+
+                ActionButton:
+                    text: 'Log Out'
+                    on_press: logout()
+
+    RelayControllersLayout:
+        id: relay_controller_layout

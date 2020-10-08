@@ -11,11 +11,11 @@ import widgets.state
 from widgets.info_bubble import print_on_info_bubble
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 
-Builder.load_file('widgets/top_labels.kv')
+Builder.load_file('widgets/relay_controller/top_labels.kv')
 class TopLabels(BoxLayout):
     pass
 
-Builder.load_file('widgets/relay_controller_button.kv')
+Builder.load_file('widgets/relay_controller/relay_controller_button.kv')
 class RelayControllerButton(BoxLayout, Button):
     def __init__(self, relay, **kwargs):
         self.relay = relay

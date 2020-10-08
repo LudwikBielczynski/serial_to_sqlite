@@ -1,7 +1,7 @@
 #:import to_control transition.control.to_control
 #:import save_to_control transition.control.save_to_control
 #:import relay widgets.state.relay
-#:import WeekdaysPopupLayout widgets.weekdays_popup.WeekdaysPopupLayout
+#:import WeekdaysPopupLayout widgets.relay_settings.weekdays_popup.WeekdaysPopupLayout
 
 <RelaySettingsScreen@Screen>:
     channel_input: channel_input.__self__
@@ -82,14 +82,12 @@
             width: root.width
             height: int(root.height)/15.
 
-            popup_layout: WeekdaysPopupLayout(self.parent.weekday_input.text)
-
             Label:
                 text: 'Weekday:'
             Button:
                 id: weekday_input
                 text: '[1]'
-                on_press: self.parent.popup_layout.popup.open
+                on_release: root.open_weekday_popup()
 
     ActionBar:
         id: action_bar_relay_settings

@@ -8,7 +8,7 @@ def to_control():
 
     app = App.get_running_app()
     app.screen_manager.transition.direction = 'right'
-    app.screen_manager.current = 'control'
+    app.screen_manager.current = 'relay_controller'
 
 def save_to_control():
     screen = App.get_running_app() \

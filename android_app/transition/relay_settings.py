@@ -6,7 +6,7 @@ def to_relay_settings(instance):
     app = App.get_running_app()
 
     widgets.state.relay = instance.relay
-    relay_settings_screen =  app.screen_manager.get_screen('relay_settings')
+    relay_settings_screen = app.screen_manager.get_screen('relay_settings')
     relay_settings_screen.channel_input.text = str(widgets.state.relay['channel'])
     relay_settings_screen.relay_name_input.text = widgets.state.relay['section_name']
     relay_settings_screen.start_time_input.text = widgets.state.relay['start']

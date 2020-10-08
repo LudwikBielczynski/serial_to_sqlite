@@ -15,8 +15,7 @@ import requests
 import widgets.state
 from widgets.info_bubble import print_on_info_bubble
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
-from widgets.weedays_popup import WeekdaysPopupLayout
-
+from widgets.relay_settings.weedays_popup import WeekdaysPopupLayout
 
 class WeekdaysButton(Button):
 
