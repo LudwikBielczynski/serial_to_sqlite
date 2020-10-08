@@ -38,7 +38,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Powered up the microprocessor...");
 
-  analogReference(EXTERNAL);
+  // analogReference(EXTERNAL);
   analogRead(VOLTAGE_SPLITTER_PIN); // First read after switching to external reference are not reliable
   analogRead(SOIL_HUMIDITY_SENSOR_PIN);
 

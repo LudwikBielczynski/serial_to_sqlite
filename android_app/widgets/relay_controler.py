@@ -25,16 +25,25 @@ Builder.load_file('widgets/relay_controller_button.kv')
 class RelayControllerButton(BoxLayout, Button):
     def __init__(self, relay, **kwargs):
         self.relay = relay
-        self.label = f'{self.relay["section_name"]} ({self.relay["channel"]})'
-        self.weekdays = self.create_weekdays_text_label()
 
         super(RelayControllerButton, self).__init__(**kwargs)
 
-    def create_weekdays_text_label(self):
+    @property
+    def label(self):
+        return f'{self.relay["section_name"]} ({self.relay["channel"]})'
+
+    @property
+    def weekdays(self):
         weekdays_text = ''
         for weekday in self.relay['weekdays']:
             weekdays_text += f'{weekday}'
         return weekdays_text
+
+    def update_view(self):
+        self.relay_button_label.text = self.label
+        self.relay_button_start.text = self.relay['start']
+        self.relay_button_end.text = self.relay['end']
+        self.relay_button_weekdays.text = self.weekdays
 
 class RelayControlerWidget(BoxLayout):
 
@@ -52,7 +61,6 @@ class RelayControlersLayout(StackLayout):
         super(RelayControlersLayout, self).__init__(**kwargs)
         self.relays_control_widgets = []
 
-        # self.create_relay_controler_widgets()
         self.communicator = WateringSchedulerCommunicator(widgets.state.host)
 
     def create_relay_controler_widgets(self):
@@ -75,13 +83,21 @@ class RelayControlersLayout(StackLayout):
             self.add_widget(getattr(self, relay_widget_name))
 
     def update_relay_widgets(self, *args):
-        # Never remove widgets, as it leads to a shitstorm with weak references on which handling
+        # Never remove widgets, as it leads to a shit-storm with weak references on which handling
         # kivy is not transparent. On Linux - no problems, on android... no comment.
-        self.create_relay_controler_widgets()
-        # FIXME: Implement real update of the widgets created in create_relay_controler_widgets
-        for relay_nr, relay in enumerate(widgets.state.relays):
-            relay_widget_name = f'relays_control_widget_{relay_nr}'
-            widget = getattr(self, relay_widget_name)
+        relays_control_widget_names = [attr
+                                       for attr in dir(self)
+                                       if 'relays_control_widget_' in attr]
+        if len(relays_control_widget_names) == 0:
+            self.create_relay_controler_widgets()
+
+        else:
+            # Get widget for which the modification was done
+            for relays_control_widget_name in relays_control_widget_names:
+                widget = getattr(self, relays_control_widget_name)
+                if widget.relay['channel'] == widgets.state.relay['channel']:
+                    widget.children[0].relay = widgets.state.relay
+                    widget.children[0].update_view()
 
     def delete_all_schedule(self, *args):
         self.communicator.delete_all_schedule(widgets.state.relays)

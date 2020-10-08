@@ -17,10 +17,6 @@ from widgets.info_bubble import print_on_info_bubble
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
 from widgets.weedays_popup import WeekdaysPopupLayout
 
-Builder.load_file('widgets/top_labels.kv')
-
-class TopLabels(BoxLayout):
-    pass
 
 class WeekdaysButton(Button):
 
@@ -111,8 +107,6 @@ class RelayControlersLayout(StackLayout):
             'width': Window.width,
             'height': int(Window.height)/15.,
         }
-        self.top_labels = TopLabels()
-        self.add_widget(self.top_labels)
 
         self.relays_control_widgets = [RelayControlerWidget(relay,
                                                             size_hint=(1, 0.06),

@@ -1,16 +1,25 @@
 #:import to_relay_settings transition.relay_settings.to_relay_settings
 
 <RelayControllerButton@Button>
+    relay_button_label: relay_button_label.__self__
+    relay_button_start: relay_button_start.__self__
+    relay_button_end: relay_button_end.__self__
+    relay_button_weekdays: relay_button_weekdays.__self__
+
     on_press:
         to_relay_settings(self)
 
     orientation: 'horizontal'
     background_color: .4, .4, .4, .85
     Label:
+        id: relay_button_label
         text: self.parent.label
     Label:
+        id: relay_button_start
         text: self.parent.relay['start']
     Label:
+        id: relay_button_end
         text: self.parent.relay['end']
     Label:
+        id: relay_button_weekdays
         text: self.parent.weekdays

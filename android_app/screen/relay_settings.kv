@@ -1,7 +1,92 @@
 #:import to_control transition.control.to_control
+#:import save_to_control transition.control.save_to_control
+#:import relay widgets.state.relay
 
 <RelaySettingsScreen@Screen>:
+    channel_input: channel_input.__self__
     action_bar_relay_settings: action_bar_relay_settings.__self__
+    relay_name_input: relay_name_input.__self__
+    start_time_input: start_time_input.__self__
+    end_time_input: end_time_input.__self__
+    weekday_input: weekday_input.__self__
+
+    StackLayout:
+        channel_input: channel_input.__self__
+        relay_name_input: relay_name_input.__self__
+        start_time_input: start_time_input.__self__
+        end_time_input: end_time_input.__self__
+        weekday_input: weekday_input.__self__
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (None, None)
+            width: root.width
+            height: int(root.height)/15.
+            channel_input: channel_input.__self__
+
+            Label:
+                text: 'Channel:'
+            Label:
+                id: channel_input
+                text: relay['channel']
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (None, None)
+            width: root.width
+            height: int(root.height)/15.
+            relay_name_input: relay_name_input.__self__
+
+            Label:
+                text: 'Section name:'
+            TextInput:
+                id: relay_name_input
+                multiline: False
+                text: relay['section_name']
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (None, None)
+            width: root.width
+            height: int(root.height)/15.
+            start_time_input: start_time_input.__self__
+
+            Label:
+                text: 'Start-time:'
+            TextInput:
+                id: start_time_input
+                multiline: False
+                text: relay['start']
+
+        BoxLayout:
+            end_time_input: end_time_input.__self__
+
+            orientation: 'horizontal'
+            size_hint: (None, None)
+            width: root.width
+            height: int(root.height)/15.
+
+            Label:
+                text: 'End-time:'
+            TextInput:
+                id: end_time_input
+                multiline: False
+                text: relay['end']
+
+        BoxLayout:
+            weekday_input: weekday_input.__self__
+
+            orientation: 'horizontal'
+            size_hint: (None, None)
+            width: root.width
+            height: int(root.height)/15.
+
+            Label:
+                text: 'Weekday:'
+            Button:
+                id: weekday_input
+                text: '1'
+                on_press: print('pressed')
 
     ActionBar:
         id: action_bar_relay_settings
@@ -10,7 +95,8 @@
             ActionPrevious:
                 title: 'Watering relays control'
                 with_previous: True
+                on_press: to_control()
 
             ActionButton:
                 text: 'Save'
-                on_press: to_control()
+                on_press: save_to_control()
