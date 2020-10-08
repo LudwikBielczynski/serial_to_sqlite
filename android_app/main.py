@@ -9,22 +9,14 @@ from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
 
-# TODO: Implement multi screen layout
-# https://kivy.org/doc/stable/api-kivy.uix.screenmanager.html
-
 # TODO: Implement manual turning on and off
 
 # Declare both screens
 Builder.load_file('screen/login.kv')
-class LoginScreen(Screen):
-    pass
+class LoginScreen(Screen): ...
 
 Builder.load_file('screen/relay_controller.kv')
-class RelayControllerScreen(Screen):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        print('initialized')
+class RelayControllerScreen(Screen): ...
 
 Builder.load_file('screen/relay_settings.kv')
 class RelaySettingsScreen(Screen):

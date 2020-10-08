@@ -1,6 +1,7 @@
 import json
 from typing import Callable, List, Optional
 
+from kivy.app import App
 from kivy.core.window import Window
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.gridlayout import GridLayout
@@ -30,9 +31,12 @@ def update_relays_state(instance, value):
         relay_to_modify['weekdays'].remove(WEEKDAYS_MAPPING[instance.weekday])
     relay_to_modify['weekdays'].sort()
 
+    print(relay_to_modify)
     for idx, relay in enumerate(widgets.state.relays):
         if relay['channel'] == widgets.state.relay['channel']:
             widgets.state.relays[idx] = relay_to_modify
+
+    widgets.state.relay = relay_to_modify
 
 class WeekdaysPopupContent(GridLayout):
 
@@ -57,6 +61,12 @@ class WeekdaysPopupContent(GridLayout):
             self.weekday_switches[weekday] = weekday_switch
             self.add_widget(self.weekday_switches[weekday])
 
+def update_relay_control_labels(*args):
+    relay_settings_screen = App.get_running_app() \
+                               .screen_manager \
+                               .get_screen('relay_settings')
+    relay_settings_screen.weekday_input.text = str(widgets.state.relay['weekdays'])
+
 class WeekdaysPopupLayout(AnchorLayout):
 
     def __init__(self, **kwargs):
@@ -68,3 +78,4 @@ class WeekdaysPopupLayout(AnchorLayout):
                            size_hint=(None, None),
                            size=(Window.width*0.9, Window.height*0.45),
                           )
+        self.popup.bind(on_dismiss=update_relay_control_labels)
