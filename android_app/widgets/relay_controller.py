@@ -1,21 +1,15 @@
 from typing import Any, Dict
 
-from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.stacklayout import StackLayout
-from kivy.uix.textinput import TextInput
 import requests
 
 import widgets.state
 from widgets.info_bubble import print_on_info_bubble
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
-from widgets.weedays_popup import WeekdaysPopupLayout
 
 Builder.load_file('widgets/top_labels.kv')
 class TopLabels(BoxLayout):
@@ -45,25 +39,25 @@ class RelayControllerButton(BoxLayout, Button):
         self.relay_button_end.text = self.relay['end']
         self.relay_button_weekdays.text = self.weekdays
 
-class RelayControlerWidget(BoxLayout):
+class RelayControllerWidget(BoxLayout):
 
     def __init__(self, relay: Dict[str, Any], **kwargs):
-        super(RelayControlerWidget, self).__init__(**kwargs)
+        super(RelayControllerWidget, self).__init__(**kwargs)
         orientation = 'horizontal'
 
         self.relay = relay
         self.relay_controller_button = RelayControllerButton(self.relay)
         self.add_widget(self.relay_controller_button)
 
-class RelayControlersLayout(StackLayout):
+class RelayControllersLayout(StackLayout):
 
     def __init__(self, **kwargs):
-        super(RelayControlersLayout, self).__init__(**kwargs)
+        super(RelayControllersLayout, self).__init__(**kwargs)
         self.relays_control_widgets = []
 
         self.communicator = WateringSchedulerCommunicator(widgets.state.host)
 
-    def create_relay_controler_widgets(self):
+    def create_relay_controller_widgets(self):
         if not hasattr(self, 'top_labels'):
             self.top_labels = TopLabels()
             self.add_widget(self.top_labels)
@@ -78,7 +72,7 @@ class RelayControlersLayout(StackLayout):
             relay_widget_name = f'relays_control_widget_{relay_nr}'
             setattr(self,
                     relay_widget_name,
-                    RelayControlerWidget(relay, size_hint=(1, 0.06), spacing=(0, 0))
+                    RelayControllerWidget(relay, size_hint=(1, 0.06), spacing=(0, 0))
                    )
             self.add_widget(getattr(self, relay_widget_name))
 
@@ -89,7 +83,7 @@ class RelayControlersLayout(StackLayout):
                                        for attr in dir(self)
                                        if 'relays_control_widget_' in attr]
         if len(relays_control_widget_names) == 0:
-            self.create_relay_controler_widgets()
+            self.create_relay_controller_widgets()
 
         else:
             # Get widget for which the modification was done

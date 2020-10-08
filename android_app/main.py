@@ -1,13 +1,8 @@
 from kivy.app import App
-from kivy.core.window import Window
 from kivy.lang import Builder
-from kivy.uix.button import Button
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen
 
-from widgets.weedays_popup import WeekdaysPopupLayout
-from widgets.relay_controler import RelayControlersLayout
+# from widgets.weedays_popup import WeekdaysPopupLayout
 import widgets.state
 
 # TODO: Save tz info?

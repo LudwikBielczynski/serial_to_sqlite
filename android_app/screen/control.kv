@@ -1,11 +1,11 @@
-#:import RelayControlersLayout widgets.relay_controler.RelayControlersLayout
+#:import RelayControlersLayout widgets.relay_controller.RelayControllersLayout
 #:import logout widgets.logout.logout
 
 <ControlScreen@Screen>:
     action_bar: action_bar.__self__
-    relay_controler_layout: relay_controler_layout.__self__
+    relay_controller_layout: relay_controller_layout.__self__
 
-    on_enter: root.ids.relay_controler_layout.update_relay_widgets()
+    on_enter: root.ids.relay_controller_layout.update_relay_widgets()
 
     ActionBar:
         id: action_bar
@@ -17,11 +17,11 @@
 
             ActionButton:
                 text: 'Clear'
-                on_press: relay_controler_layout.delete_all_schedule()
+                on_press: relay_controller_layout.delete_all_schedule()
 
             ActionButton:
                 text: 'Log Out'
                 on_press: logout()
 
-    RelayControlersLayout:
-        id: relay_controler_layout
+    RelayControllersLayout:
+        id: relay_controller_layout

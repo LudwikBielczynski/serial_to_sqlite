@@ -1,3 +1,4 @@
+import json
 from typing import Callable, List, Optional
 
 from kivy.core.window import Window
@@ -60,12 +61,18 @@ class WeekdaysPopupContent(GridLayout):
 class WeekdaysPopupLayout(AnchorLayout):
 
     def __init__(self,
-                 relay_nr: int,
-                 weekdays: List[int],
+                #  relay_nr: int,
+                 weekdays: str,
                  **kwargs
                 ):
         super(WeekdaysPopupLayout, self).__init__(anchor_x='right', anchor_y='bottom', **kwargs)
-        weekdays_popup_content = WeekdaysPopupContent(relay_nr, weekdays)
+        try:
+            weekdays_list = json.loads(weekdays)
+        except:
+            weekdays_list = []
+        relay_nr = 0
+
+        weekdays_popup_content = WeekdaysPopupContent(relay_nr, weekdays_list)
         self.popup = Popup(title='Select weekdays',
                            content=weekdays_popup_content,
                            size_hint=(None, None),
