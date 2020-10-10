@@ -8,8 +8,10 @@ from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 # TODO: Save tz info?
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
-
-# TODO: Implement manual turning on and off
+# TODO: Implement logs bubble for logs
+# TODO: Implement manual relay turning on and off
+# TODO: Reset relays on logout
+# TODO: Validate input on relay settings screen
 
 # Declare both screens
 Builder.load_file('screen/login.kv')

@@ -57,6 +57,14 @@ class RelayControllersLayout(StackLayout):
 
         self.communicator = WateringSchedulerCommunicator(widgets.state.host)
 
+    @property
+    def relays_control_widget_names(self):
+        return [attr
+                for attr in dir(self)
+                if 'relays_control_widget_' in attr
+                if attr != 'relays_control_widget_names'
+                ]
+
     def create_relay_controller_widgets(self):
         if not hasattr(self, 'top_labels'):
             self.top_labels = TopLabels()
@@ -79,19 +87,40 @@ class RelayControllersLayout(StackLayout):
     def update_relay_widgets(self, *args):
         # Never remove widgets, as it leads to a shit-storm with weak references on which handling
         # kivy is not transparent. On Linux - no problems, on android... no comment.
-        relays_control_widget_names = [attr
-                                       for attr in dir(self)
-                                       if 'relays_control_widget_' in attr]
-        if len(relays_control_widget_names) == 0:
+        if len(self.relays_control_widget_names) == 0:
             self.create_relay_controller_widgets()
 
         else:
             # Get widget for which the modification was done
-            for relays_control_widget_name in relays_control_widget_names:
+            for relays_control_widget_name in self.relays_control_widget_names:
                 widget = getattr(self, relays_control_widget_name)
                 if widget.relay['channel'] == widgets.state.relay['channel']:
                     widget.children[0].relay = widgets.state.relay
                     widget.children[0].update_view()
+
+            # Check if state was changed
+            relays_state_current = self.get_widgets_current_state()
+
+            def flatten(relays):
+                return ['_'.join([str(value) for value in relay.values()])
+                        for relay in relays_state_current
+                       ]
+            relays_state_current_flat = set(flatten(relays_state_current))
+            relays_state_flat = set(flatten(widgets.state.relays))
+
+            if relays_state_current_flat != relays_state_flat:
+                print('unsynchronized')
+                relay_diff = ((relays_state_current_flat - relays_state_flat) |
+                              (relays_state_current_flat - relays_state_flat))
+                print(relay_diff)
+
+    def get_widgets_current_state(self):
+        relays_state_current = []
+        for relays_control_widget_name in self.relays_control_widget_names:
+            widget = getattr(self, relays_control_widget_name)
+            relays_state_current.append(widget.children[0].relay)
+
+        return relays_state_current
 
     def delete_all_schedule(self, *args):
         self.communicator.delete_all_schedule(widgets.state.relays)

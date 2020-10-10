@@ -21,8 +21,8 @@ class WeekdaySwitch(Switch):
 def update_relays_state(instance, value):
 
     relay_to_modify = [relay
-                      for relay in widgets.state.relays
-                      if relay['channel'] == widgets.state.relay['channel']
+                       for relay in widgets.state.relays
+                       if relay['channel'] == widgets.state.relay['channel']
                       ][0]
 
     if value:
