@@ -27,11 +27,11 @@ int soilHumiditySensorValue;
 const unsigned short int VOLTAGE_MEASUREMENTS_NR = 10;
 const float REFERENCE_VOLTAGE = 2.99;
 const float VOLTAGE_SPLIT_FACTOR = 11.0; // based on (R1 + R2)/R2 where R1=100kOhm and R2=10kOhm
-const float VOLTAGE_CORRECTION = 0.60;
+const float VOLTAGE_CORRECTION = 0.00;
 float voltage;
 
-Transmitter transmitter(CE_PIN, CSN_PIN, SCK_PIN, RADIO_POWER_PIN, SLAVE_ADDRESS);
-SoilHumiditySensor soil_humidity_sensor(SOIL_HUMIDITY_POWER_PIN, SOIL_HUMIDITY_SENSOR_PIN);
+// Transmitter transmitter(CE_PIN, CSN_PIN, SCK_PIN, RADIO_POWER_PIN, SLAVE_ADDRESS);
+// SoilHumiditySensor soil_humidity_sensor(SOIL_HUMIDITY_POWER_PIN, SOIL_HUMIDITY_SENSOR_PIN);
 Microcontroller microcontroller(VOLTAGE_SPLITTER_PIN, VOLTAGE_SPLIT_FACTOR, REFERENCE_VOLTAGE, VOLTAGE_CORRECTION);
 
 void setup() {
@@ -40,31 +40,35 @@ void setup() {
 
   // analogReference(EXTERNAL);
   analogRead(VOLTAGE_SPLITTER_PIN); // First read after switching to external reference are not reliable
-  analogRead(SOIL_HUMIDITY_SENSOR_PIN);
+  // analogRead(SOIL_HUMIDITY_SENSOR_PIN);
 
-  printf_begin();
-  pinMode(RADIO_POWER_PIN, OUTPUT);
-  pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
+  // printf_begin();
+  // pinMode(RADIO_POWER_PIN, OUTPUT);
+  // pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
 }
 
 /****************************************************************************/
 
 void loop() {
+  Serial.println("Something");
+  Serial.println(F_CPU);
 
   // Read battery voltage before other components are powered up
   voltage = microcontroller.measureBatteryVoltage(VOLTAGE_MEASUREMENTS_NR);
+  Serial.println(voltage);
+  delay(4000);
 
-  char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
+  // char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
-  // // Measure soil moisture
-  soilHumiditySensorValue = soil_humidity_sensor.measure();
+  // // // Measure soil moisture
+  // soilHumiditySensorValue = soil_humidity_sensor.measure();
 
-  // Send data to the receiver
-  transmitter.turnOn();
-  transmitter.setUp();
-  transmitter.prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
-  transmitter.sendData(dataToSend, dataToSendSize);
-  transmitter.turnOff();
+  // // Send data to the receiver
+  // transmitter.turnOn();
+  // transmitter.setUp();
+  // transmitter.prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
+  // transmitter.sendData(dataToSend, dataToSendSize);
+  // transmitter.turnOff();
 
   microcontroller.sleep();
 

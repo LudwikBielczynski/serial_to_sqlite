@@ -1,6 +1,12 @@
 #include "Microcontroller.h"
 
 float Microcontroller::measureBatteryVoltage(unsigned short int averaged_measurements_nr) {
+  for (size_t i = 0; i < 5; i++)
+  {
+    analogRead(voltage_splitter_pin);
+    delay(10);
+  }
+
   int voltagesSum = 0;
 
   for (size_t i = 0; i < averaged_measurements_nr; i++)
@@ -28,7 +34,7 @@ void Microcontroller::sleep() {
   clock_prescale_set(clock_div_128);
   // sleep_cpu();
 
-  delay(100);
+  delay(50);
   clock_prescale_set(clock_div_1);
   power_all_enable();
   sleep_disable();
