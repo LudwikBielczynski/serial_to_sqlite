@@ -15,20 +15,23 @@ from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 # TODO: Validate input on relay settings screen
 
 # Declare info bubble to which the tekst is logged
-# Builder.load_file('widgets/info_bubble.kv')
-# class InfoBubble(Bubble): ...
+Builder.load_file('widgets/info_bubble.kv')
+class InfoBubble(Bubble): ...
 
 # Declare all screens
 Builder.load_file('screen/login.kv')
-class LoginScreen(Screen):     
-    
+class LoginScreen(Screen):
+
     def __init__(self, **kwargs):
-        self.message = 'LoginScreen'
+        self.message = 'RelayControllerScreen'
         super(LoginScreen, self).__init__(**kwargs)
-        
+
+        # self.info_bubble = InfoBubble()
+        # self.add_widget(self.info_bubble)
+
 Builder.load_file('screen/relay_controller.kv')
 class RelayControllerScreen(Screen):
-    
+
     def __init__(self, **kwargs):
         self.message = 'RelayControllerScreen'
         super(RelayControllerScreen, self).__init__(**kwargs)
@@ -47,9 +50,13 @@ class WateringControlSystemScreenManager(ScreenManager):
         self.message = 'WateringControlSystemScreenManager'
         super(WateringControlSystemScreenManager, self).__init__(**kwargs)
 
-        self.add_widget(LoginScreen(name='login'))
-        self.add_widget(RelayControllerScreen(name='relay_controller'))
-        self.add_widget(RelaySettingsScreen(name='relay_settings'))
+        self.login_screen = LoginScreen(name='login')
+        self.relay_controller_screen = RelayControllerScreen(name='relay_controller')
+        self.relay_settings_screen = RelaySettingsScreen(name='relay_settings')
+
+        self.add_widget(self.login_screen)
+        self.add_widget(self.relay_controller_screen)
+        self.add_widget(self.relay_settings_screen)
 
 class WateringControlSystemApp(App):
 

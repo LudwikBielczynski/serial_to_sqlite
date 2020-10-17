@@ -6,7 +6,8 @@
     username: username.__self__
     password: password.__self__
     login_action_bar: login_action_bar.__self__
-    info_bubble: info_bubble.__self__
+    # info_bubble: info_bubble.__self__
+    message: 'LoginScreen'
 
     RelativeLayout:
         size_hint: None, None
@@ -75,16 +76,16 @@
                 title: 'Watering control system'
                 with_previous: False
 
-    Bubble:
-        info_bubble: info_bubble.__self__
-        message: ''
-        background_image: ''
-        background_color: (1., 1., 1., 0.1)
-        size_hint: None, None
-        show_arrow: False
-        pos_hint: {'center_y': 0.15, 'right': 1}
-        size: dp(200), info_bubble.texture_size[1] + dp(20)
-        Label:
-            id: info_bubble
-            text: root.message
-            background_color: (0., 1, 1, 1)
+    # Bubble:
+    #     info_bubble: info_bubble.__self__
+    #     message: ''
+    #     background_image: ''
+    #     background_color: (1., 1., 1., 0.1)
+    #     size_hint: None, None
+    #     show_arrow: False
+    #     pos_hint: {'center_y': 0.15, 'right': 1}
+    #     size: dp(200), info_bubble.texture_size[1] + dp(20)
+    #     Label:
+    #         id: info_bubble
+    #         text: root.message
+    #         background_color: (0., 1, 1, 1)

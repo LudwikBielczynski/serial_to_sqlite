@@ -1,20 +1,14 @@
 <InfoBubble@Bubble>
     info_bubble: info_bubble.__self__
-
-    # declare our message StringProperty
-    message: 'empty message'
-    background: (1, 1, 1)
-    # let the bubble be of 200 device pixels
-    # and expand as necessary on the height
-    # depending on the message + 20 dp of padding.
+    message: ''
+    background_image: ''
+    background_color: (1., 1., 1., 0.1)
     size_hint: None, None
     show_arrow: False
-    pos_hint: {'top': 1, 'right': 1}
+    pos_hint: {'center_y': 0.15, 'right': 1}
     size: dp(200), info_bubble.texture_size[1] + dp(20)
+
     Label:
         id: info_bubble
         text: root.message
-        # constraint the text to be displayed within
-        # the bubble width and have it be unrestricted
-        # on the height.
-        text_size: root.width - dp(20), None
+        background_color: (0., 1, 1, 1)

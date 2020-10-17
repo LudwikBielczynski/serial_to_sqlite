@@ -1,34 +1,32 @@
+import threading
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.factory import Factory
 
 def print_on_info_bubble(message):
+    print(message)
     message = repr(message)
     app = App.get_running_app()
-    # screen = app.screen_manager.get_screen('login')
-    # screen = app.screen_manager.get_screen('relay_controller')
     screen = app.screen_manager.current_screen
-    # if not app.root.current_screen.ids.info_bubble:
-    # screen.ids.info_bubble = Factory.InfoBubble()
-    screen.ids.info_bubble.text = message
-    # app.root.current_screen.ids.info_bubble.text = repr('dupa')
-    # app.root.current_screen.ids.info_bubble.text = message
-    screen.info_bubble.text = message
-    
-    # Remove bubble after 2 secs
-    # Clock.schedule_once(lambda dt:
-    #     Window.remove_widget(screen.ids.info_bubble), 2)
 
-    # if not app.root.current_screen.ids.info_bubble:
-    #     relay_controller_screen.ids.info_bubble = Factory.InfoBubble()
+    # If info bubble was not initialized before
+    if not hasattr(screen, 'info_bubble'):
+        screen.info_bubble = Factory.InfoBubble()
 
-    # # app.root.screens.ids.info_bubble.message = message
+    # If the info bubble is not currently shown it does not have any parents
+    if screen.info_bubble.parent is None:
+        screen.add_widget(screen.info_bubble)
+        screen.info_bubble.message = ''
 
-    # # Check if bubble is not already on screen
-    # if not app.root.current_screen.ids.info_bubble.parent:
-    #     Window.add_widget(app.root.current_screen.ids.info_bubble)
+    # The message should be appended if the bubble is already present
+    if hasattr(screen.info_bubble, 'message'):
+        if screen.info_bubble.message:
+            screen.info_bubble.message += '\n'
+        screen.info_bubble.message += message.replace("'", '')
+    else:
+        screen.info_bubble.message = message
 
-    # # Remove bubble after 2 secs
-    # Clock.schedule_once(lambda dt:
-    #     Window.remove_widget(app.root.current_screen.ids.info_bubble), 2)
+    # Remove bubble after few secs
+    Clock.schedule_once(lambda dt: screen.remove_widget(screen.info_bubble), 5)
