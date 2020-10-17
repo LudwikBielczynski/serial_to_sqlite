@@ -1,24 +1,37 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.bubble import Bubble
 
 import widgets.state
 from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 
+# TODO: Reset relays on logout
 # TODO: Save tz info?
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
 # TODO: Implement logs bubble for logs
 # TODO: Implement manual relay turning on and off
-# TODO: Reset relays on logout
 # TODO: Validate input on relay settings screen
 
-# Declare both screens
-Builder.load_file('screen/login.kv')
-class LoginScreen(Screen): ...
+# Declare info bubble to which the tekst is logged
+# Builder.load_file('widgets/info_bubble.kv')
+# class InfoBubble(Bubble): ...
 
+# Declare all screens
+Builder.load_file('screen/login.kv')
+class LoginScreen(Screen):     
+    
+    def __init__(self, **kwargs):
+        self.message = 'LoginScreen'
+        super(LoginScreen, self).__init__(**kwargs)
+        
 Builder.load_file('screen/relay_controller.kv')
-class RelayControllerScreen(Screen): ...
+class RelayControllerScreen(Screen):
+    
+    def __init__(self, **kwargs):
+        self.message = 'RelayControllerScreen'
+        super(RelayControllerScreen, self).__init__(**kwargs)
 
 Builder.load_file('screen/relay_settings.kv')
 class RelaySettingsScreen(Screen):
@@ -31,13 +44,18 @@ class RelaySettingsScreen(Screen):
 class WateringControlSystemScreenManager(ScreenManager):
 
     def __init__(self, **kwargs):
+        self.message = 'WateringControlSystemScreenManager'
         super(WateringControlSystemScreenManager, self).__init__(**kwargs)
 
-        self.login_screen = self.add_widget(LoginScreen(name='login'))
-        self.control_screen = self.add_widget(RelayControllerScreen(name='relay_controller'))
-        self.relay_settings = self.add_widget(RelaySettingsScreen(name='relay_settings'))
+        self.add_widget(LoginScreen(name='login'))
+        self.add_widget(RelayControllerScreen(name='relay_controller'))
+        self.add_widget(RelaySettingsScreen(name='relay_settings'))
 
 class WateringControlSystemApp(App):
+
+    def __init__(self, **kwargs):
+        self.message = 'WateringControlSystemApp'
+        super(WateringControlSystemApp, self).__init__(**kwargs)
 
     def build(self):
         self.screen_manager = WateringControlSystemScreenManager()

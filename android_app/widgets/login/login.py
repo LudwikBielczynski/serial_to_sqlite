@@ -1,3 +1,4 @@
+import time
 from typing import Any, Dict, List
 
 from kivy.app import App
@@ -15,15 +16,21 @@ from requests.exceptions import ConnectionError
 
 import widgets.state
 from widgets.watering_scheduler_communicator import WateringSchedulerCommunicator
+from widgets.info_bubble import print_on_info_bubble
 
 def login():
     # TODO: Authentication
-    print('Logging in')
+    print_on_info_bubble('Logging in')
     communicator = WateringSchedulerCommunicator(widgets.state.host)
+    time.sleep(1)
+    
     # communicator.fetch_data_from_host()
-    print('Fetched data')
+    print_on_info_bubble('Fetched data')
+    time.sleep(2)
+
     # widgets.state.relays = communicator.get_formatted_relays_data()
-    print('Logged in')
+    print_on_info_bubble('Logged in')
+    time.sleep(1)
 
     # DEBUG: Mock some data for debug
     widgets.state.relays = [
