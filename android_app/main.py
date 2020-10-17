@@ -10,7 +10,6 @@ from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 # TODO: Save tz info?
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
-# TODO: Implement logs bubble for logs
 # TODO: Implement manual relay turning on and off
 # TODO: Validate input on relay settings screen
 

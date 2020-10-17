@@ -39,9 +39,9 @@ def login():
         {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
         ]
 
-    # if widgets.state.relays:
-    #     app = App.get_running_app()
-    #     app.screen_manager.transition.direction = 'left'
-    #     app.screen_manager.current = 'relay_controller'
-    # else:
-    #     print('Did not log in as no data was fetched')
+    if widgets.state.relays:
+        app = App.get_running_app()
+        app.screen_manager.transition.direction = 'left'
+        app.screen_manager.current = 'relay_controller'
+    else:
+        print('Did not log in as no data was fetched')
