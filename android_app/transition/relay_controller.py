@@ -4,8 +4,13 @@ from kivy.app import App
 
 import widgets.state
 
-def to_control():
+from widgets.login.login import validate_login_and_relays_data
 
+def maybe_switch_to_relay_controller(dt):
+    if widgets.state.login_transition:
+        validate_login_and_relays_data()
+
+def to_control():
     app = App.get_running_app()
     app.screen_manager.transition.direction = 'right'
     app.screen_manager.current = 'relay_controller'

@@ -1,16 +1,19 @@
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.bubble import Bubble
 
 import widgets.state
 from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
+from transition.relay_controller import maybe_switch_to_relay_controller
+
+widgets.state.DEBUG = True
 
 # TODO: Reset relays on logout
 # TODO: Save tz info?
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
-# TODO: Long functions in non-blocking threads
 # TODO: Implement manual relay turning on and off
 # TODO: Validate input on relay settings screen
 
@@ -67,5 +70,6 @@ class WateringControlSystemApp(App):
         widgets.state.password = self.root.current_screen.ids.password.text
 
 if __name__ == '__main__':
+    Clock.schedule_interval(maybe_switch_to_relay_controller, 1)
     app = WateringControlSystemApp()
     app.run()

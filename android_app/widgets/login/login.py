@@ -1,3 +1,4 @@
+import threading
 import time
 from typing import Any, Dict, List
 
@@ -19,30 +20,38 @@ from widgets.watering_scheduler_communicator import WateringSchedulerCommunicato
 from widgets.info_bubble import print_on_info_bubble
 
 def login():
+    '''Function used to dispatch a thread to fetch the data needed to login'''
     communicator = WateringSchedulerCommunicator(widgets.state.host)
+    if widgets.state.communicator == 'free':
+        thread_fetch_data = threading.Thread(target=communicator.fetch_data_from_host).start()
+        print_on_info_bubble('Trying to fetch data')
+
+def validate_login_and_relays_data():
     try:
-        # communicator.fetch_data_from_host()
-        # widgets.state.relays = communicator.get_formatted_relays_data()
-        print_on_info_bubble('Logged in')
+        if (widgets.state.communicator == 'fetched_data_from_host') | widgets.state.DEBUG:
+            print_on_info_bubble('Logged in')
 
-        # DEBUG: Mock some data for debug
-        widgets.state.relays = [
-            {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
-            {'channel': 2, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-            {'channel': 3, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
-            {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-            ]
+            communicator = WateringSchedulerCommunicator(widgets.state.host)
+            widgets.state.relays = communicator.format_relays_data()
+            if widgets.state.DEBUG:
+                # Mock some data for debug
+                widgets.state.relays = [
+                    {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
+                    {'channel': 2, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+                    {'channel': 3, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
+                    {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+                    ]
 
-        if widgets.state.relays:
-            app = App.get_running_app()
-            app.screen_manager.transition.direction = 'left'
-            app.screen_manager.current = 'relay_controller'
-        else:
-            raise AttributeError
+            if widgets.state.relays:
+                app = App.get_running_app()
+                app.screen_manager.transition.direction = 'left'
+                app.screen_manager.current = 'relay_controller'
+            else:
+                raise AttributeError
 
-    except ConnectionError:
-        print_on_info_bubble('Could not fetch data')
 
     except AttributeError:
         print_on_info_bubble('Data from host empty')
 
+    widgets.state.communicator = 'free'
+    widgets.state.login_transition = False

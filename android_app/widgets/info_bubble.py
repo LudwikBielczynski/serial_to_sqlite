@@ -24,7 +24,7 @@ def update_info_bubble(screen, message):
         screen.info_bubble.message = message
 
     # Remove bubble after few secs
-    Clock.schedule_once(lambda dt: screen.remove_widget(screen.info_bubble), 15)
+    Clock.schedule_once(lambda dt: screen.remove_widget(screen.info_bubble), 8)
 
 def print_on_info_bubble(message):
     print(message)

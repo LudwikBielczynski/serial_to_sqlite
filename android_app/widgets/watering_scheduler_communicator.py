@@ -1,13 +1,15 @@
 from json.decoder import JSONDecodeError
+import time
 from typing import Any, Dict, List, Optional
 
 import requests
 from requests.exceptions import ConnectionError
-from urllib3.connection import NewConnectionError
+from urllib3.connection import NewConnectionError, ConnectTimeoutError
 
 import widgets.state
+from widgets.info_bubble import print_on_info_bubble
 
-TIMEOUT_TIME = 10
+TIMEOUT_TIME = 5
 
 class WateringSchedulerCommunicator:
 
@@ -17,11 +19,26 @@ class WateringSchedulerCommunicator:
         self.schedules = {} # type: Dict[str, Dict[str, Any]]
 
     def fetch_data_from_host(self):
+        if widgets.state.DEBUG:
+            widgets.state.login_transition = True
+
         try:
+            waiting_counter = 0
+            while (widgets.state.communicator != 'free') & (waiting_counter <= TIMEOUT_TIME):
+                time.sleep(1)
+                waiting_counter += 1
+
+            if waiting_counter == TIMEOUT_TIME:
+                raise ConnectTimeoutError
+
+            widgets.state.communicator = 'fetched_data_from_host'
             self.channel_section_name_map = self._get_relay_configuration()
             self.schedules = self._get_schedule()
-        except (ConnectionError, NewConnectionError, JSONDecodeError) as msg:
-            raise ConnectionError from msg
+            widgets.state.login_transition = True
+
+        except (ConnectionError, NewConnectionError, JSONDecodeError, ConnectTimeoutError) as msg:
+            widgets.state.communicator = 'free'
+            print_on_info_bubble('Could not connect to host')
 
     def _get_relay_configuration(self) -> Dict[str, str]:
         url = f'http://{self.host}:5000/get_relay_configuration'
@@ -33,7 +50,7 @@ class WateringSchedulerCommunicator:
         response = requests.get(url=url, timeout=TIMEOUT_TIME, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
-    def get_formatted_relays_data(self):
+    def format_relays_data(self):
         def create_default_relay(channel: str,
                                  section_name: str
                                 ) -> Dict[str, Any]:

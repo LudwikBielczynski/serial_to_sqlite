@@ -1,5 +1,7 @@
 from typing import Any, Dict, List
 
+DEBUG = False
+
 relays = [] # type: List[Dict[str, Any]]
 
 host = 'dzialka-kaluszyn.ddns.net'
@@ -14,3 +16,4 @@ relay = {'channel': '',
         } # type: Dict[str, Any]
 
 communicator = 'free'
+login_transition = False
