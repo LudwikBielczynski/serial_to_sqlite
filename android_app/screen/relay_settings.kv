@@ -2,6 +2,7 @@
 #:import save_to_control transition.relay_controller.save_to_control
 #:import relay widgets.state.relay
 #:import WeekdaysPopupLayout widgets.relay_settings.weekdays_popup.WeekdaysPopupLayout
+#:import time_validation widgets.relay_settings.relay_settings.time_validation
 
 <RelaySettingsScreen@Screen>:
     channel_input: channel_input.__self__
@@ -58,6 +59,7 @@
                 id: start_time_input
                 multiline: False
                 text: relay['start']
+                on_text_validate: time_validation(self)
 
         BoxLayout:
             end_time_input: end_time_input.__self__
@@ -73,6 +75,7 @@
                 id: end_time_input
                 multiline: False
                 text: relay['end']
+                on_text_validate: time_validation(self)
 
         BoxLayout:
             weekday_input: weekday_input.__self__
