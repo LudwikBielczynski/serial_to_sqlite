@@ -6,7 +6,7 @@ void Transmitter::turnOn() {
   // Function used to turn on the transmitter
   Serial.println("Activate radio");
   digitalWrite(power_pin, HIGH);
-  delay(200);
+  delay(2000);
 
   pinMode(ce_pin, INPUT);
   pinMode(sck_pin, OUTPUT);

@@ -30,7 +30,7 @@ const float VOLTAGE_SPLIT_FACTOR = 11.0; // based on (R1 + R2)/R2 where R1=100kO
 const float VOLTAGE_CORRECTION = 0.00;
 float voltage;
 
-// Transmitter transmitter(CE_PIN, CSN_PIN, SCK_PIN, RADIO_POWER_PIN, SLAVE_ADDRESS);
+Transmitter transmitter(CE_PIN, CSN_PIN, SCK_PIN, RADIO_POWER_PIN, SLAVE_ADDRESS);
 // SoilHumiditySensor soil_humidity_sensor(SOIL_HUMIDITY_POWER_PIN, SOIL_HUMIDITY_SENSOR_PIN);
 Microcontroller microcontroller(VOLTAGE_SPLITTER_PIN, VOLTAGE_SPLIT_FACTOR, REFERENCE_VOLTAGE, VOLTAGE_CORRECTION);
 
@@ -40,11 +40,11 @@ void setup() {
 
   // analogReference(EXTERNAL);
   analogRead(VOLTAGE_SPLITTER_PIN); // First read after switching to external reference are not reliable
-  // analogRead(SOIL_HUMIDITY_SENSOR_PIN);
+  analogRead(SOIL_HUMIDITY_SENSOR_PIN);
 
   // printf_begin();
-  // pinMode(RADIO_POWER_PIN, OUTPUT);
-  // pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
+  pinMode(RADIO_POWER_PIN, OUTPUT);
+  pinMode(SOIL_HUMIDITY_POWER_PIN, OUTPUT);
 }
 
 /****************************************************************************/
@@ -61,14 +61,20 @@ void loop() {
   // char dataToSend[dataToSendSize] = ""; // Important to zero this variable before preparing data
 
   // // // Measure soil moisture
-  // soilHumiditySensorValue = soil_humidity_sensor.measure();
 
+  digitalWrite(SOIL_HUMIDITY_POWER_PIN, HIGH);
+  delay(2000);
+  digitalWrite(SOIL_HUMIDITY_POWER_PIN, LOW);
+
+  // soilHumiditySensorValue = soil_humidity_sensor.measure();
+  // Serial.println(soilHumiditySensorValue);
   // // Send data to the receiver
-  // transmitter.turnOn();
+  digitalWrite(RADIO_POWER_PIN, HIGH);
+  transmitter.turnOn();
   // transmitter.setUp();
   // transmitter.prepareDataToSend(dataToSend, soilHumiditySensorValue, voltage);
   // transmitter.sendData(dataToSend, dataToSendSize);
-  // transmitter.turnOff();
+  transmitter.turnOff();
 
   microcontroller.sleep();
 

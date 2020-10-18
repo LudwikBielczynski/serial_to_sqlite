@@ -11,7 +11,7 @@
     (via_costs 50)
     (plane_via_costs 5)
     (start_ripup_costs 100)
-    (start_pass_no 533)
+    (start_pass_no 77)
     (layer_rule F.Cu
       (active on)
       (preferred_direction vertical)
@@ -81,11 +81,11 @@
     )
   )
   (class "kicad_default"
-    +3V3 GND "Net-(BT1-Pad1)" "Net-(C3-Pad2)" "Net-(C4-Pad2)" "Q1_D4" "Net-(Q1-Pad2)" "Q2_D5"
-    "Net-(Q2-Pad1)" "DIV_A2" CE CSN SCK MOSI MISO "SEN_A0"
-    "Net-(U4-Pad16)" "Net-(U4-Pad4)" "Net-(U4-Pad5)" "Net-(U4-Pad24)" "Net-(U4-Pad12)" "Net-(U4-Pad26)" "Net-(U4-Pad13)" "Net-(U4-Pad27)"
-    "Net-(U4-Pad28)" "Net-(C1-Pad1)" "Net-(U1-Pad8)" "Net-(D1-Pad1)" "Net-(D2-Pad1)" "RXD_J1" "TXD_J1" "RESET_J1"
-    "Net-(C7-Pad1)" "Net-(C8-Pad2)" "Net-(C8-Pad1)" "Net-(C9-Pad1)"
+    GND VCC "Net-(BT1-Pad1)" +3V3 "Net-(C3-Pad2)" "Net-(C4-Pad2)" "Q1_D4" "Net-(Q1-Pad2)"
+    "Q2_D5" "DIV_A2" CE CSN SCK MOSI MISO "SEN_A0"
+    "Net-(U4-Pad16)" "Net-(U4-Pad24)" "Net-(U4-Pad12)" "Net-(U4-Pad26)" "Net-(U4-Pad13)" "Net-(U4-Pad27)" "Net-(U4-Pad28)" "Net-(U1-Pad8)"
+    "Net-(D1-Pad1)" "Net-(D2-Pad1)" "RXD_J1" "TXD_J1" "RESET_J1" "Net-(C8-Pad2)" "Net-(C8-Pad1)" "Net-(C9-Pad1)"
+    "Net-(Q2-Pad2)" "Net-(R9-Pad1)" "U5_D2" "U5_D3" "U5_RST"
     (clearance_class "kicad_default")
     (via_rule kicad_default)
     (rule
