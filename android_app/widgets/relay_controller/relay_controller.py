@@ -53,7 +53,6 @@ class RelayControllersLayout(StackLayout):
 
     def __init__(self, **kwargs):
         super(RelayControllersLayout, self).__init__(**kwargs)
-        self.relays_control_widgets = []
 
         self.communicator = WateringSchedulerCommunicator(widgets.state.host)
 
@@ -63,7 +62,7 @@ class RelayControllersLayout(StackLayout):
                 for attr in dir(self)
                 if 'relays_control_widget_' in attr
                 if attr != 'relays_control_widget_names'
-                ]
+               ]
 
     def create_relay_controller_widgets(self):
         if not hasattr(self, 'top_labels'):
@@ -113,6 +112,12 @@ class RelayControllersLayout(StackLayout):
                 relay_diff = ((relays_state_current_flat - relays_state_flat) |
                               (relays_state_current_flat - relays_state_flat))
                 print(relay_diff)
+
+    def remove_widgets(self):
+        for relays_control_widget_name in self.relays_control_widget_names:
+            widget = getattr(self, relays_control_widget_name)
+            self.remove_widget(widget)
+            delattr(self, relays_control_widget_name)
 
     def get_widgets_current_state(self):
         relays_state_current = []

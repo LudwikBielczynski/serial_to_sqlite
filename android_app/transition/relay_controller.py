@@ -4,6 +4,7 @@ from kivy.app import App
 
 import widgets.state
 
+from widgets.info_bubble import print_on_info_bubble
 from widgets.login.login import validate_login_and_relays_data
 
 def maybe_switch_to_relay_controller(dt):
@@ -29,3 +30,4 @@ def save_to_control():
     }
 
     to_control()
+    print_on_info_bubble('Saved')

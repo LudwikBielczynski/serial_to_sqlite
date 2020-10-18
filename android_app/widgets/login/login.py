@@ -49,7 +49,6 @@ def validate_login_and_relays_data():
             else:
                 raise AttributeError
 
-
     except AttributeError:
         print_on_info_bubble('Data from host empty')
 
