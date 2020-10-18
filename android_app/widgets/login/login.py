@@ -19,29 +19,30 @@ from widgets.watering_scheduler_communicator import WateringSchedulerCommunicato
 from widgets.info_bubble import print_on_info_bubble
 
 def login():
-    print_on_info_bubble('Logging in')
     communicator = WateringSchedulerCommunicator(widgets.state.host)
-    time.sleep(1)
+    try:
+        # communicator.fetch_data_from_host()
+        # widgets.state.relays = communicator.get_formatted_relays_data()
+        print_on_info_bubble('Logged in')
 
-    # communicator.fetch_data_from_host()
-    print_on_info_bubble('Fetched data')
-    time.sleep(1)
+        # DEBUG: Mock some data for debug
+        widgets.state.relays = [
+            {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
+            {'channel': 2, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+            {'channel': 3, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
+            {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
+            ]
 
-    # widgets.state.relays = communicator.get_formatted_relays_data()
-    print_on_info_bubble('Logged in')
-    time.sleep(1)
+        if widgets.state.relays:
+            app = App.get_running_app()
+            app.screen_manager.transition.direction = 'left'
+            app.screen_manager.current = 'relay_controller'
+        else:
+            raise AttributeError
 
-    # DEBUG: Mock some data for debug
-    widgets.state.relays = [
-        {'channel': 1, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [1]},
-        {'channel': 2, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-        {'channel': 3, 'section_name': 'Relay 1', 'start': '18:00', 'end': '20:00', 'weekdays': [2, 4, 6]},
-        {'channel': 4, 'section_name': 'Relay 1', 'start': '16:00', 'end': '18:00', 'weekdays': [2, 4]},
-        ]
+    except ConnectionError:
+        print_on_info_bubble('Could not fetch data')
 
-    if widgets.state.relays:
-        app = App.get_running_app()
-        app.screen_manager.transition.direction = 'left'
-        app.screen_manager.current = 'relay_controller'
-    else:
-        print('Did not log in as no data was fetched')
+    except AttributeError:
+        print_on_info_bubble('Data from host empty')
+

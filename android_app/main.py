@@ -10,6 +10,7 @@ from widgets.relay_settings.weekdays_popup import WeekdaysPopupLayout
 # TODO: Save tz info?
 # time.strftime('%z')
 # datetime.strptime('20:00+0200', '%H:%M%z')
+# TODO: Long functions in non-blocking threads
 # TODO: Implement manual relay turning on and off
 # TODO: Validate input on relay settings screen
 
@@ -19,21 +20,10 @@ class InfoBubble(Bubble): ...
 
 # Declare all screens
 Builder.load_file('screen/login.kv')
-class LoginScreen(Screen):
-
-    def __init__(self, **kwargs):
-        self.message = 'RelayControllerScreen'
-        super(LoginScreen, self).__init__(**kwargs)
-
-        # self.info_bubble = InfoBubble()
-        # self.add_widget(self.info_bubble)
+class LoginScreen(Screen): ...
 
 Builder.load_file('screen/relay_controller.kv')
-class RelayControllerScreen(Screen):
-
-    def __init__(self, **kwargs):
-        self.message = 'RelayControllerScreen'
-        super(RelayControllerScreen, self).__init__(**kwargs)
+class RelayControllerScreen(Screen): ...
 
 Builder.load_file('screen/relay_settings.kv')
 class RelaySettingsScreen(Screen):

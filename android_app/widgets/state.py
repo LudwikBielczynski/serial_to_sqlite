@@ -12,3 +12,5 @@ relay = {'channel': '',
          'end': '',
          'weekday': [],
         } # type: Dict[str, Any]
+
+communicator = 'free'

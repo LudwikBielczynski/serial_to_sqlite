@@ -7,28 +7,30 @@ from urllib3.connection import NewConnectionError
 
 import widgets.state
 
+TIMEOUT_TIME = 10
+
 class WateringSchedulerCommunicator:
 
     def __init__(self, host: str):
         self.host = host
         self.channel_section_name_map = {} # type: Dict[str, str]
         self.schedules = {} # type: Dict[str, Dict[str, Any]]
-        
+
     def fetch_data_from_host(self):
         try:
             self.channel_section_name_map = self._get_relay_configuration()
             self.schedules = self._get_schedule()
-        except (ConnectionError, NewConnectionError, JSONDecodeError):
-            pass
+        except (ConnectionError, NewConnectionError, JSONDecodeError) as msg:
+            raise ConnectionError from msg
 
     def _get_relay_configuration(self) -> Dict[str, str]:
         url = f'http://{self.host}:5000/get_relay_configuration'
-        response = requests.get(url=url, timeout=15, auth=(widgets.state.username, widgets.state.password))
+        response = requests.get(url=url, timeout=TIMEOUT_TIME, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
     def _get_schedule(self) -> Dict[str, Dict[str, Any]]:
         url = f'http://{self.host}:5000/get_schedule'
-        response = requests.get(url=url, timeout=15, auth=(widgets.state.username, widgets.state.password))
+        response = requests.get(url=url, timeout=TIMEOUT_TIME, auth=(widgets.state.username, widgets.state.password))
         return response.json()
 
     def get_formatted_relays_data(self):
