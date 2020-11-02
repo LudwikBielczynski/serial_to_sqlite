@@ -5,20 +5,26 @@ def validate_time_input(time_str):
     '''Checks if the string representing time is well formed'''
     is_valid = True
 
-    hours_str = time_str.split(':')[0]
-    if len(hours_str) > 2:
-        is_valid = False
+    if (set(time_str) - set('1234567890:')) == set():
+        if ':' in time_str:
+            hours_str = time_str.split(':')[0]
+            if len(hours_str) > 2:
+                is_valid = False
 
-    hours = int(hours_str)
-    if (hours >= 24) | (hours < 0):
-        is_valid = False
+            hours = int(hours_str)
+            if (hours >= 24) | (hours < 0):
+                is_valid = False
 
-    minutes_str = time_str.split(':')[1]
-    if len(minutes_str) != 2:
-        is_valid = False
+            minutes_str = time_str.split(':')[1]
+            if len(minutes_str) != 2:
+                is_valid = False
 
-    minutes = int(minutes_str)
-    if (minutes >= 60) | (minutes < 0):
+            minutes = int(minutes_str)
+            if (minutes >= 60) | (minutes < 0):
+                is_valid = False
+        else:
+            is_valid = False
+    else:
         is_valid = False
     return is_valid
 

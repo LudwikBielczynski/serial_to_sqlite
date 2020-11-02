@@ -20,15 +20,15 @@
             ActionOverflow:
                 ActionButton:
                     text: 'Clear'
-                    on_press: relay_controller_layout.delete_all_schedule()
+                    on_release: relay_controller_layout.delete_all_schedule()
 
                 ActionButton:
                     text: 'Send to Host'
-                    on_press: relay_controller_layout.send_schedule_to_host()
+                    on_release: relay_controller_layout.send_schedule_to_host()
 
                 ActionButton:
                     text: 'Log Out'
-                    on_press: logout()
+                    on_release: logout()
 
     RelayControllersLayout:
         id: relay_controller_layout

@@ -11,7 +11,11 @@ def maybe_switch_to_relay_controller(dt):
     if widgets.state.login_transition:
         validate_login_and_relays_data()
 
-def to_control():
+def to_control(revert=True):
+    if revert:
+        widgets.state.relay = widgets.state.relay_cache
+        widgets.state.relays = widgets.state.relays_cache
+           
     app = App.get_running_app()
     app.screen_manager.transition.direction = 'right'
     app.screen_manager.current = 'relay_controller'
@@ -29,5 +33,5 @@ def save_to_control():
         'weekdays': json.loads(screen.weekday_input.text),
     }
 
-    to_control()
+    to_control(revert=False)
     print_on_info_bubble('Saved')

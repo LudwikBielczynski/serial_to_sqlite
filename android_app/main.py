@@ -10,12 +10,6 @@ from transition.relay_controller import maybe_switch_to_relay_controller
 
 widgets.state.DEBUG = True
 
-# TODO: Save tz info?
-# time.strftime('%z')
-# datetime.strptime('20:00+0200', '%H:%M%z')
-# TODO: Implement manual relay turning on and off
-# TODO: transition from settings to controller saved or not saved makes no difference but it should
-
 # Declare info bubble to which the text is logged
 Builder.load_file('widgets/info_bubble.kv')
 class InfoBubble(Bubble): ...
