@@ -1,3 +1,6 @@
+// SimpleTx -
+// based on https://forum.arduino.cc/index.php?topic=421081
+
 #include "Transmitter.h"
 
 const char * TRANSMITTER_NAME = "Tx1";
@@ -6,7 +9,7 @@ void Transmitter::turnOn() {
   // Function used to turn on the transmitter
   Serial.println("Activate radio");
   digitalWrite(power_pin, HIGH);
-  delay(2000);
+  delay(1000);
 
   pinMode(ce_pin, INPUT);
   pinMode(sck_pin, OUTPUT);
@@ -82,7 +85,7 @@ bool Transmitter::sendData(char * dataToSend, unsigned short dataToSendSize) {
   }
 
   if (radio->failureDetected) {
-    Serial.println("A failure was detected. Trying to Reset configuration");
+    Serial.println("A failure was detected. Reset configuration");
     radio->failureDetected = 0; // Reset the detection value
     Transmitter::setUp();
   }

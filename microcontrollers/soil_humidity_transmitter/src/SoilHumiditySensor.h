@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-#ifndef SOILSENSOR_H
-#define SOILSENSOR_H
+#ifndef SOILHUMIDITYSENSOR_H
+#define SOILHUMIDITYSENSOR_H
 
 class SoilHumiditySensor{
   public:
@@ -11,14 +11,19 @@ class SoilHumiditySensor{
       power_pin{_power_pin},
       sensor_pin{_sensor_pin}
     {
-      Serial.println("Initialized soil humidity sensor...");
+      Serial.println("Initialized soil humidity sensor");
     };
 
 
     // functions used to return the value of the soil humidity from the sensor
-    uint8_t measure();
+    uint16_t measure(uint16_t soilHumiditySensorValue, float batteryVoltage);
 
   private:
+    const float _voltageOutputMax = 3.0;
+
+    // To stabilize the analogue PIN read-out
+    void discardFewFirstAnalogueReads();
+
     // Function used to turn on the soil humidity sensor
     void turnOn();
 

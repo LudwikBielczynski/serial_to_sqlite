@@ -23,7 +23,6 @@ class Transmitter{
       power_pin{_power_pin},
       slave_address{_slave_address}
     {
-      Serial.println("Initialized transmitter...");
       radio = new RF24(ce_pin, csn_pin);
     };
 
