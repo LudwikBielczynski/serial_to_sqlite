@@ -7,8 +7,7 @@
 
 class Microcontroller{
   public:
-    uint8_t microcontroller_led_on_pin;
-    uint8_t voltage_splitter_pin;
+    uint8_t microcontroller_led_on_pin, voltage_splitter_pin;
     float voltage_split_factor, reference_voltage, voltage_correction;
 
     Microcontroller(uint8_t _microcontroller_led_on_pin,
